@@ -1,0 +1,676 @@
+{
+  "id": "46e4b4cb-08c6-458b-abfd-2e1820f8d461",
+  "name": "Autonomous Target Rover",
+  "short_description": "A compact rover that drives to targets and demonstrates autonomous navigation.",
+  "total_budget": 1500.0,
+  "final_deadline": "2026-11-28",
+  "current_stage": "Concept",
+  "operating_environment": "Unknown",
+  "location": "Hackathon laboratory",
+  "software_platform": "Ubuntu 22.04 and ROS2 Humble",
+  "team_size": 4,
+  "risk_tolerance": "Moderate",
+  "milestones": [
+    {
+      "id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "name": "Compute setup",
+      "description": "Complete and validate compute setup.",
+      "sequence_number": 1,
+      "target_date": "2026-08-21",
+      "mandatory": true,
+      "completion_criteria": "Compute setup acceptance test passes."
+    },
+    {
+      "id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "name": "Manual mobility",
+      "description": "Complete and validate manual mobility.",
+      "sequence_number": 2,
+      "target_date": "2026-09-14",
+      "mandatory": true,
+      "completion_criteria": "Manual mobility acceptance test passes."
+    },
+    {
+      "id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "name": "Localization",
+      "description": "Complete and validate localization.",
+      "sequence_number": 3,
+      "target_date": "2026-10-14",
+      "mandatory": true,
+      "completion_criteria": "Localization acceptance test passes."
+    },
+    {
+      "id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "name": "Autonomous navigation",
+      "description": "Complete and validate autonomous navigation.",
+      "sequence_number": 4,
+      "target_date": "2026-11-13",
+      "mandatory": true,
+      "completion_criteria": "Autonomous navigation acceptance test passes."
+    },
+    {
+      "id": "08574ac5-544c-4424-bc8c-49db0f8737fe",
+      "name": "Final demonstration",
+      "description": "Complete and validate final demonstration.",
+      "sequence_number": 5,
+      "target_date": "2026-11-28",
+      "mandatory": true,
+      "completion_criteria": "Final demonstration acceptance test passes."
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "007b47b4-d238-4447-9d56-e6249c72226b",
+      "name": "Compute",
+      "description": "Run onboard robotics software",
+      "requiredness": "Mandatory",
+      "first_relevant_milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "acceptance_criteria": "Demonstrate that the rover can compute.",
+      "condition_description": null
+    },
+    {
+      "id": "27bf02e6-47ef-4a8c-99f4-238218f2d038",
+      "name": "Supply power",
+      "description": "Provide stable electrical power",
+      "requiredness": "Mandatory",
+      "first_relevant_milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "acceptance_criteria": "Demonstrate that the rover can supply power.",
+      "condition_description": null
+    },
+    {
+      "id": "8cff1537-9e6e-496c-860f-231252bfaf53",
+      "name": "Move",
+      "description": "Drive the rover under manual control",
+      "requiredness": "Mandatory",
+      "first_relevant_milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "acceptance_criteria": "Demonstrate that the rover can move.",
+      "condition_description": null
+    },
+    {
+      "id": "e6237968-d3d2-41a4-85ed-7e844a2b0c83",
+      "name": "Communicate",
+      "description": "Exchange commands and telemetry",
+      "requiredness": "Mandatory",
+      "first_relevant_milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "acceptance_criteria": "Demonstrate that the rover can communicate.",
+      "condition_description": null
+    },
+    {
+      "id": "1dfa489d-10de-42d7-ab11-49e24aa97cce",
+      "name": "Localize",
+      "description": "Estimate rover position",
+      "requiredness": "Mandatory",
+      "first_relevant_milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "acceptance_criteria": "Demonstrate that the rover can localize.",
+      "condition_description": null
+    },
+    {
+      "id": "4917c29b-9fc2-486b-a8d6-cadfce11904f",
+      "name": "Detect obstacles",
+      "description": "Detect nearby obstacles",
+      "requiredness": "Conditional",
+      "first_relevant_milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "acceptance_criteria": "Demonstrate that the rover can detect obstacles.",
+      "condition_description": "Required when autonomous obstacle avoidance is selected."
+    },
+    {
+      "id": "5c9f721b-2ff6-48f9-9c4d-55bdf78867e9",
+      "name": "Navigate autonomously",
+      "description": "Plan and execute autonomous motion",
+      "requiredness": "Deferred",
+      "first_relevant_milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "acceptance_criteria": "Demonstrate that the rover can navigate autonomously.",
+      "condition_description": null
+    },
+    {
+      "id": "1766943d-5bdd-4b65-a606-c13153919c5c",
+      "name": "Record data",
+      "description": "Record sensor and system data",
+      "requiredness": "Optional",
+      "first_relevant_milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "acceptance_criteria": "Demonstrate that the rover can record data.",
+      "condition_description": null
+    }
+  ],
+  "component_roles": [
+    {
+      "id": "29c400e3-d17c-4b1a-90f5-119909cf6961",
+      "role_name": "Onboard computer",
+      "category": "Compute",
+      "purpose": "Runs ROS2 and control software",
+      "capability_id": "007b47b4-d238-4447-9d56-e6249c72226b",
+      "required_quantity": 1,
+      "requiredness": "Mandatory",
+      "first_required_milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "required_by": "2026-08-21",
+      "necessity_confidence": 95,
+      "replacement_difficulty": 3,
+      "integration_risk": 3,
+      "functional_acceptance_criteria": "Onboard computer passes its functional test.",
+      "current_status": "Proposed",
+      "condition_description": null
+    },
+    {
+      "id": "cf84cbe6-4fc7-4194-9684-70b4604ef0c8",
+      "role_name": "Storage",
+      "category": "Compute",
+      "purpose": "Stores the operating system, software, and logs",
+      "capability_id": "007b47b4-d238-4447-9d56-e6249c72226b",
+      "required_quantity": 1,
+      "requiredness": "Mandatory",
+      "first_required_milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "required_by": "2026-08-21",
+      "necessity_confidence": 95,
+      "replacement_difficulty": 3,
+      "integration_risk": 3,
+      "functional_acceptance_criteria": "Storage passes its functional test.",
+      "current_status": "Proposed",
+      "condition_description": null
+    },
+    {
+      "id": "d6ce15e4-3906-498a-945e-3e510e396eff",
+      "role_name": "Computer power converter",
+      "category": "Power",
+      "purpose": "Supplies regulated compute power",
+      "capability_id": "27bf02e6-47ef-4a8c-99f4-238218f2d038",
+      "required_quantity": 1,
+      "requiredness": "Mandatory",
+      "first_required_milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "required_by": "2026-08-21",
+      "necessity_confidence": 95,
+      "replacement_difficulty": 3,
+      "integration_risk": 3,
+      "functional_acceptance_criteria": "Computer power converter passes its functional test.",
+      "current_status": "Proposed",
+      "condition_description": null
+    },
+    {
+      "id": "aa6c909e-18fe-4105-823c-9b16d1233b82",
+      "role_name": "Drive motors",
+      "category": "Mobility",
+      "purpose": "Generate wheel torque",
+      "capability_id": "8cff1537-9e6e-496c-860f-231252bfaf53",
+      "required_quantity": 2,
+      "requiredness": "Mandatory",
+      "first_required_milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "required_by": "2026-09-14",
+      "necessity_confidence": 95,
+      "replacement_difficulty": 3,
+      "integration_risk": 3,
+      "functional_acceptance_criteria": "Drive motors passes its functional test.",
+      "current_status": "Proposed",
+      "condition_description": null
+    },
+    {
+      "id": "ae72e6e8-d7ce-4a4b-918a-32a2f419a364",
+      "role_name": "Motor driver",
+      "category": "Mobility",
+      "purpose": "Controls motor current from the computer",
+      "capability_id": "8cff1537-9e6e-496c-860f-231252bfaf53",
+      "required_quantity": 1,
+      "requiredness": "Mandatory",
+      "first_required_milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "required_by": "2026-09-14",
+      "necessity_confidence": 95,
+      "replacement_difficulty": 3,
+      "integration_risk": 4,
+      "functional_acceptance_criteria": "Motor driver passes its functional test.",
+      "current_status": "Proposed",
+      "condition_description": null
+    },
+    {
+      "id": "ddad48ca-19bf-49a4-b1f4-e318db7240b8",
+      "role_name": "Battery",
+      "category": "Power",
+      "purpose": "Supplies mobile power",
+      "capability_id": "27bf02e6-47ef-4a8c-99f4-238218f2d038",
+      "required_quantity": 1,
+      "requiredness": "Mandatory",
+      "first_required_milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "required_by": "2026-09-14",
+      "necessity_confidence": 95,
+      "replacement_difficulty": 3,
+      "integration_risk": 3,
+      "functional_acceptance_criteria": "Battery passes its functional test.",
+      "current_status": "Proposed",
+      "condition_description": null
+    },
+    {
+      "id": "f3d6633f-f0c4-43cb-a112-7722f5016d08",
+      "role_name": "Wheels",
+      "category": "Mobility",
+      "purpose": "Transfer motor torque to the ground",
+      "capability_id": "8cff1537-9e6e-496c-860f-231252bfaf53",
+      "required_quantity": 1,
+      "requiredness": "Mandatory",
+      "first_required_milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "required_by": "2026-09-14",
+      "necessity_confidence": 95,
+      "replacement_difficulty": 3,
+      "integration_risk": 3,
+      "functional_acceptance_criteria": "Wheels passes its functional test.",
+      "current_status": "Proposed",
+      "condition_description": null
+    },
+    {
+      "id": "f563d01d-12e9-4a7c-8b1a-e4181b8cd02f",
+      "role_name": "Localization system",
+      "category": "Sensing",
+      "purpose": "Estimates rover position",
+      "capability_id": "1dfa489d-10de-42d7-ab11-49e24aa97cce",
+      "required_quantity": 1,
+      "requiredness": "Mandatory",
+      "first_required_milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "required_by": "2026-10-14",
+      "necessity_confidence": 95,
+      "replacement_difficulty": 3,
+      "integration_risk": 4,
+      "functional_acceptance_criteria": "Localization system passes its functional test.",
+      "current_status": "Proposed",
+      "condition_description": null
+    },
+    {
+      "id": "85409c50-761a-4aec-93ea-18260955bd2f",
+      "role_name": "Obstacle-detection system",
+      "category": "Sensing",
+      "purpose": "Detects obstacles for navigation",
+      "capability_id": "4917c29b-9fc2-486b-a8d6-cadfce11904f",
+      "required_quantity": 1,
+      "requiredness": "Conditional",
+      "first_required_milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "required_by": "2026-11-13",
+      "necessity_confidence": 75,
+      "replacement_difficulty": 3,
+      "integration_risk": 4,
+      "functional_acceptance_criteria": "Obstacle-detection system passes its functional test.",
+      "current_status": "Proposed",
+      "condition_description": "Required for autonomous obstacle-aware navigation."
+    }
+  ],
+  "role_milestone_ratings": [
+    {
+      "component_role_id": "29c400e3-d17c-4b1a-90f5-119909cf6961",
+      "milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "rating": 5
+    },
+    {
+      "component_role_id": "29c400e3-d17c-4b1a-90f5-119909cf6961",
+      "milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "rating": 5
+    },
+    {
+      "component_role_id": "29c400e3-d17c-4b1a-90f5-119909cf6961",
+      "milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "rating": 5
+    },
+    {
+      "component_role_id": "29c400e3-d17c-4b1a-90f5-119909cf6961",
+      "milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "rating": 5
+    },
+    {
+      "component_role_id": "29c400e3-d17c-4b1a-90f5-119909cf6961",
+      "milestone_id": "08574ac5-544c-4424-bc8c-49db0f8737fe",
+      "rating": 5
+    },
+    {
+      "component_role_id": "cf84cbe6-4fc7-4194-9684-70b4604ef0c8",
+      "milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "rating": 4
+    },
+    {
+      "component_role_id": "cf84cbe6-4fc7-4194-9684-70b4604ef0c8",
+      "milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "rating": 3
+    },
+    {
+      "component_role_id": "cf84cbe6-4fc7-4194-9684-70b4604ef0c8",
+      "milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "rating": 3
+    },
+    {
+      "component_role_id": "cf84cbe6-4fc7-4194-9684-70b4604ef0c8",
+      "milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "rating": 4
+    },
+    {
+      "component_role_id": "cf84cbe6-4fc7-4194-9684-70b4604ef0c8",
+      "milestone_id": "08574ac5-544c-4424-bc8c-49db0f8737fe",
+      "rating": 3
+    },
+    {
+      "component_role_id": "d6ce15e4-3906-498a-945e-3e510e396eff",
+      "milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "rating": 5
+    },
+    {
+      "component_role_id": "d6ce15e4-3906-498a-945e-3e510e396eff",
+      "milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "rating": 5
+    },
+    {
+      "component_role_id": "d6ce15e4-3906-498a-945e-3e510e396eff",
+      "milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "rating": 5
+    },
+    {
+      "component_role_id": "d6ce15e4-3906-498a-945e-3e510e396eff",
+      "milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "rating": 5
+    },
+    {
+      "component_role_id": "d6ce15e4-3906-498a-945e-3e510e396eff",
+      "milestone_id": "08574ac5-544c-4424-bc8c-49db0f8737fe",
+      "rating": 5
+    },
+    {
+      "component_role_id": "aa6c909e-18fe-4105-823c-9b16d1233b82",
+      "milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "rating": 0
+    },
+    {
+      "component_role_id": "aa6c909e-18fe-4105-823c-9b16d1233b82",
+      "milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "rating": 5
+    },
+    {
+      "component_role_id": "aa6c909e-18fe-4105-823c-9b16d1233b82",
+      "milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "rating": 2
+    },
+    {
+      "component_role_id": "aa6c909e-18fe-4105-823c-9b16d1233b82",
+      "milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "rating": 4
+    },
+    {
+      "component_role_id": "aa6c909e-18fe-4105-823c-9b16d1233b82",
+      "milestone_id": "08574ac5-544c-4424-bc8c-49db0f8737fe",
+      "rating": 5
+    },
+    {
+      "component_role_id": "ae72e6e8-d7ce-4a4b-918a-32a2f419a364",
+      "milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "rating": 0
+    },
+    {
+      "component_role_id": "ae72e6e8-d7ce-4a4b-918a-32a2f419a364",
+      "milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "rating": 5
+    },
+    {
+      "component_role_id": "ae72e6e8-d7ce-4a4b-918a-32a2f419a364",
+      "milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "rating": 2
+    },
+    {
+      "component_role_id": "ae72e6e8-d7ce-4a4b-918a-32a2f419a364",
+      "milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "rating": 5
+    },
+    {
+      "component_role_id": "ae72e6e8-d7ce-4a4b-918a-32a2f419a364",
+      "milestone_id": "08574ac5-544c-4424-bc8c-49db0f8737fe",
+      "rating": 5
+    },
+    {
+      "component_role_id": "ddad48ca-19bf-49a4-b1f4-e318db7240b8",
+      "milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "rating": 2
+    },
+    {
+      "component_role_id": "ddad48ca-19bf-49a4-b1f4-e318db7240b8",
+      "milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "rating": 5
+    },
+    {
+      "component_role_id": "ddad48ca-19bf-49a4-b1f4-e318db7240b8",
+      "milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "rating": 4
+    },
+    {
+      "component_role_id": "ddad48ca-19bf-49a4-b1f4-e318db7240b8",
+      "milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "rating": 5
+    },
+    {
+      "component_role_id": "ddad48ca-19bf-49a4-b1f4-e318db7240b8",
+      "milestone_id": "08574ac5-544c-4424-bc8c-49db0f8737fe",
+      "rating": 5
+    },
+    {
+      "component_role_id": "f3d6633f-f0c4-43cb-a112-7722f5016d08",
+      "milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "rating": 0
+    },
+    {
+      "component_role_id": "f3d6633f-f0c4-43cb-a112-7722f5016d08",
+      "milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "rating": 5
+    },
+    {
+      "component_role_id": "f3d6633f-f0c4-43cb-a112-7722f5016d08",
+      "milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "rating": 1
+    },
+    {
+      "component_role_id": "f3d6633f-f0c4-43cb-a112-7722f5016d08",
+      "milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "rating": 4
+    },
+    {
+      "component_role_id": "f3d6633f-f0c4-43cb-a112-7722f5016d08",
+      "milestone_id": "08574ac5-544c-4424-bc8c-49db0f8737fe",
+      "rating": 5
+    },
+    {
+      "component_role_id": "f563d01d-12e9-4a7c-8b1a-e4181b8cd02f",
+      "milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "rating": 0
+    },
+    {
+      "component_role_id": "f563d01d-12e9-4a7c-8b1a-e4181b8cd02f",
+      "milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "rating": 1
+    },
+    {
+      "component_role_id": "f563d01d-12e9-4a7c-8b1a-e4181b8cd02f",
+      "milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "rating": 5
+    },
+    {
+      "component_role_id": "f563d01d-12e9-4a7c-8b1a-e4181b8cd02f",
+      "milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "rating": 5
+    },
+    {
+      "component_role_id": "f563d01d-12e9-4a7c-8b1a-e4181b8cd02f",
+      "milestone_id": "08574ac5-544c-4424-bc8c-49db0f8737fe",
+      "rating": 5
+    },
+    {
+      "component_role_id": "85409c50-761a-4aec-93ea-18260955bd2f",
+      "milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "rating": 0
+    },
+    {
+      "component_role_id": "85409c50-761a-4aec-93ea-18260955bd2f",
+      "milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "rating": 1
+    },
+    {
+      "component_role_id": "85409c50-761a-4aec-93ea-18260955bd2f",
+      "milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "rating": 2
+    },
+    {
+      "component_role_id": "85409c50-761a-4aec-93ea-18260955bd2f",
+      "milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "rating": 5
+    },
+    {
+      "component_role_id": "85409c50-761a-4aec-93ea-18260955bd2f",
+      "milestone_id": "08574ac5-544c-4424-bc8c-49db0f8737fe",
+      "rating": 5
+    }
+  ],
+  "products": [],
+  "relationships": [
+    {
+      "id": "7c91df3c-c614-40f8-a28d-94d60798e7af",
+      "source_id": "29c400e3-d17c-4b1a-90f5-119909cf6961",
+      "source_type": "Component role",
+      "relationship_type": "Enables",
+      "target_id": "007b47b4-d238-4447-9d56-e6249c72226b",
+      "target_type": "Capability",
+      "strength": "Hard",
+      "relevant_milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "condition": "",
+      "notes": "",
+      "validation_status": "Unverified"
+    },
+    {
+      "id": "e4e8162d-69a6-4912-ac2d-ca82cd4cee22",
+      "source_id": "29c400e3-d17c-4b1a-90f5-119909cf6961",
+      "source_type": "Component role",
+      "relationship_type": "Required for",
+      "target_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "target_type": "Milestone",
+      "strength": "Hard",
+      "relevant_milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "condition": "",
+      "notes": "",
+      "validation_status": "Unverified"
+    },
+    {
+      "id": "18d372fc-306c-4db9-a743-7c60abfe288c",
+      "source_id": "aa6c909e-18fe-4105-823c-9b16d1233b82",
+      "source_type": "Component role",
+      "relationship_type": "Requires compatible",
+      "target_id": "ae72e6e8-d7ce-4a4b-918a-32a2f419a364",
+      "target_type": "Component role",
+      "strength": "Hard",
+      "relevant_milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "condition": "",
+      "notes": "",
+      "validation_status": "Unverified"
+    },
+    {
+      "id": "60214d8e-d5b1-4a0e-8db8-f62aef29b4a1",
+      "source_id": "aa6c909e-18fe-4105-823c-9b16d1233b82",
+      "source_type": "Component role",
+      "relationship_type": "Powered by",
+      "target_id": "ddad48ca-19bf-49a4-b1f4-e318db7240b8",
+      "target_type": "Component role",
+      "strength": "Hard",
+      "relevant_milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "condition": "",
+      "notes": "",
+      "validation_status": "Unverified"
+    },
+    {
+      "id": "efbdcd1e-cc9c-439c-b6b9-ca7b7a996303",
+      "source_id": "ae72e6e8-d7ce-4a4b-918a-32a2f419a364",
+      "source_type": "Component role",
+      "relationship_type": "Connects to",
+      "target_id": "29c400e3-d17c-4b1a-90f5-119909cf6961",
+      "target_type": "Component role",
+      "strength": "Hard",
+      "relevant_milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "condition": "",
+      "notes": "",
+      "validation_status": "Unverified"
+    },
+    {
+      "id": "427acf50-0a59-450c-ba1d-5e5681f20235",
+      "source_id": "f563d01d-12e9-4a7c-8b1a-e4181b8cd02f",
+      "source_type": "Component role",
+      "relationship_type": "Enables",
+      "target_id": "1dfa489d-10de-42d7-ab11-49e24aa97cce",
+      "target_type": "Capability",
+      "strength": "Hard",
+      "relevant_milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "condition": "",
+      "notes": "",
+      "validation_status": "Unverified"
+    },
+    {
+      "id": "76c041b4-d9de-48f9-b2b3-ecdf03e1719f",
+      "source_id": "85409c50-761a-4aec-93ea-18260955bd2f",
+      "source_type": "Component role",
+      "relationship_type": "Enables",
+      "target_id": "4917c29b-9fc2-486b-a8d6-cadfce11904f",
+      "target_type": "Capability",
+      "strength": "Hard",
+      "relevant_milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "condition": "",
+      "notes": "",
+      "validation_status": "Unverified"
+    }
+  ],
+  "requirement_groups": [
+    {
+      "id": "52fabacc-c834-43f4-ad21-98838b9a0d50",
+      "group_name": "Compute subsystem",
+      "owner_id": "007b47b4-d238-4447-9d56-e6249c72226b",
+      "owner_type": "Capability",
+      "logic_type": "ALL_OF",
+      "member_component_role_ids": [
+        "29c400e3-d17c-4b1a-90f5-119909cf6961",
+        "cf84cbe6-4fc7-4194-9684-70b4604ef0c8",
+        "d6ce15e4-3906-498a-945e-3e510e396eff"
+      ],
+      "requirement_strength": "Hard",
+      "relevant_milestone_id": "b8e4b038-0c52-4413-8b6a-1f923e7e2d6d",
+      "condition": "",
+      "minimum_required_count": null
+    },
+    {
+      "id": "2c8080fc-bfbd-46d0-bfe8-1abc8ac0d369",
+      "group_name": "Manual mobility subsystem",
+      "owner_id": "8cff1537-9e6e-496c-860f-231252bfaf53",
+      "owner_type": "Capability",
+      "logic_type": "ALL_OF",
+      "member_component_role_ids": [
+        "aa6c909e-18fe-4105-823c-9b16d1233b82",
+        "ae72e6e8-d7ce-4a4b-918a-32a2f419a364",
+        "ddad48ca-19bf-49a4-b1f4-e318db7240b8",
+        "f3d6633f-f0c4-43cb-a112-7722f5016d08",
+        "29c400e3-d17c-4b1a-90f5-119909cf6961"
+      ],
+      "requirement_strength": "Hard",
+      "relevant_milestone_id": "1c9cb883-2884-4982-91e6-c208830ad612",
+      "condition": "",
+      "minimum_required_count": null
+    },
+    {
+      "id": "ac27b7d0-ad91-40de-9886-c6a278b4756a",
+      "group_name": "Localization subsystem",
+      "owner_id": "1dfa489d-10de-42d7-ab11-49e24aa97cce",
+      "owner_type": "Capability",
+      "logic_type": "ANY_OF",
+      "member_component_role_ids": [
+        "f563d01d-12e9-4a7c-8b1a-e4181b8cd02f"
+      ],
+      "requirement_strength": "Hard",
+      "relevant_milestone_id": "1af3677c-2a0b-43dd-9e8e-f21df1ba0575",
+      "condition": "",
+      "minimum_required_count": null
+    },
+    {
+      "id": "83181d82-aff1-43c2-88b1-c3ac4a12e9eb",
+      "group_name": "Obstacle detection",
+      "owner_id": "4917c29b-9fc2-486b-a8d6-cadfce11904f",
+      "owner_type": "Capability",
+      "logic_type": "ANY_OF",
+      "member_component_role_ids": [
+        "85409c50-761a-4aec-93ea-18260955bd2f"
+      ],
+      "requirement_strength": "Soft",
+      "relevant_milestone_id": "bda1e9ec-8806-41dd-bf1c-652d0570c7a8",
+      "condition": "Required for obstacle-aware autonomous navigation.",
+      "minimum_required_count": null
+    }
+  ],
+  "created_at": "2026-08-01T00:05:21.764993Z",
+  "updated_at": "2026-08-01T00:05:21.765118Z"
+}

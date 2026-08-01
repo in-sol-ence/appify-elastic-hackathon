@@ -1,0 +1,47 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+.streamlit/secrets.toml
+
+# Python
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Node / project-local Pi dependencies
+node_modules/
+.pi/npm/
+.pi/git/
+
+# Local databases and generated/raw data
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+apify_storage/
+storage/
+data/raw/
+data/exports/
+# Product/evidence development seed files are intentionally tracked.
+
+# Logs, editors, and operating systems
+*.log
+.DS_Store
+.idea/
+.vscode/
+*.swp

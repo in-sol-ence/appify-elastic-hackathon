@@ -1,0 +1,8 @@
+from services.source_health import availability_score,delivery_fit
+WEIGHTS={'Low':{'technical':.40,'cost':.25,'documentation':.10,'integration':.10,'availability':.10,'delivery':.05},'Medium':{'technical':.40,'cost':.15,'documentation':.10,'integration':.10,'availability':.15,'delivery':.10},'High':{'technical':.40,'cost':.05,'documentation':.05,'integration':.15,'availability':.20,'delivery':.15},'Critical':{'technical':.40,'cost':.05,'documentation':.05,'integration':.15,'availability':.20,'delivery':.15}}
+def compare_live_products(candidates,urgency_level):
+ weights=WEIGHTS.get(urgency_level,WEIGHTS['Low']);results=[]
+ for item in candidates:
+  compatible=item.get('compatibility_status')!='Incompatible';scores={'technical':100 if item.get('compatibility_status')=='Compatible' else 65 if compatible else 0,'cost':item.get('price_score',30),'documentation':100 if item.get('documentation_available') else 30,'integration':max(0,100-item.get('integration_risk',3)*15),'availability':availability_score(item.get('availability','unknown'),item.get('active_sources',1),item.get('source_confidence',.5),item.get('fresh',False)),'delivery':{'Safe':100,'Tight':60,'Late':0,'Unknown':30}.get(item.get('delivery_fit','Unknown'),30)}
+  total=sum(scores[k]*weights[k] for k in weights);results.append(item|{'overall_comparison_score':round(total if compatible else min(total,20),1),'applied_weighting_profile':weights,'score_breakdown':scores,'urgency_level':urgency_level,'explanation':f"{urgency_level} urgency applies availability weight {weights['availability']:.0%} and cost weight {weights['cost']:.0%}."})
+ return sorted(results,key=lambda x:(x.get('compatibility_status')=='Incompatible',-x['overall_comparison_score']))

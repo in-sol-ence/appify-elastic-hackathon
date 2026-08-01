@@ -1,0 +1,1302 @@
+[
+  {
+    "product_id": "product-201f0a145396880a06e78fce",
+    "manufacturer": "Development Sample Labs",
+    "name": "Dual Motor Controller DMC-10",
+    "model": "DMC-10",
+    "manufacturer_part_number": "DEV-DMC-10",
+    "category": "motor_driver",
+    "subcategory": "brushed_dc",
+    "description": "Development-only dual-channel mobile robot motor controller sample.",
+    "product_summary": "Dual-channel brushed DC controller for 15 V robot drive systems.",
+    "intended_applications": [
+      "mobile robots",
+      "robotic rovers"
+    ],
+    "important_features": [
+      "dual channel",
+      "current limiting"
+    ],
+    "motor_types": [
+      "brushed_dc"
+    ],
+    "control_interfaces": [
+      "PWM",
+      "UART"
+    ],
+    "communication_interfaces": [
+      "UART"
+    ],
+    "supported_operating_systems": [],
+    "supported_software": [],
+    "input_voltage_min_v": 6,
+    "input_voltage_max_v": 22,
+    "continuous_current_per_channel_a": 7.5,
+    "peak_current_per_channel_a": 15,
+    "channel_count": 2,
+    "power_w": null,
+    "weight_g": 92,
+    "length_mm": 70,
+    "width_mm": 45,
+    "height_mm": 18,
+    "price_estimate": 47,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-cbaf84e800d8e51d5d1eb554",
+    "manufacturer": "Development Sample Labs",
+    "name": "Dual Motor Controller DMC-20",
+    "model": "DMC-20",
+    "manufacturer_part_number": "DEV-DMC-20",
+    "category": "motor_driver",
+    "subcategory": "brushed_dc",
+    "description": "Development-only dual-channel mobile robot motor controller sample.",
+    "product_summary": "Dual-channel brushed DC controller for 18 V robot drive systems.",
+    "intended_applications": [
+      "mobile robots",
+      "robotic rovers"
+    ],
+    "important_features": [
+      "dual channel",
+      "current limiting"
+    ],
+    "motor_types": [
+      "brushed_dc"
+    ],
+    "control_interfaces": [
+      "PWM",
+      "CAN"
+    ],
+    "communication_interfaces": [
+      "CAN"
+    ],
+    "supported_operating_systems": [],
+    "supported_software": [],
+    "input_voltage_min_v": 6,
+    "input_voltage_max_v": 26,
+    "continuous_current_per_channel_a": 10.0,
+    "peak_current_per_channel_a": 20,
+    "channel_count": 2,
+    "power_w": null,
+    "weight_g": 104,
+    "length_mm": 70,
+    "width_mm": 45,
+    "height_mm": 18,
+    "price_estimate": 59,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-e676dc9603c1fc7005ba430d",
+    "manufacturer": "Development Sample Labs",
+    "name": "Dual Motor Controller DMC-30",
+    "model": "DMC-30",
+    "manufacturer_part_number": "DEV-DMC-30",
+    "category": "motor_driver",
+    "subcategory": "brushed_dc",
+    "description": "Development-only dual-channel mobile robot motor controller sample.",
+    "product_summary": "Dual-channel brushed DC controller for 21 V robot drive systems.",
+    "intended_applications": [
+      "mobile robots",
+      "robotic rovers"
+    ],
+    "important_features": [
+      "dual channel",
+      "current limiting"
+    ],
+    "motor_types": [
+      "brushed_dc"
+    ],
+    "control_interfaces": [
+      "PWM",
+      "UART"
+    ],
+    "communication_interfaces": [
+      "UART"
+    ],
+    "supported_operating_systems": [],
+    "supported_software": [],
+    "input_voltage_min_v": 6,
+    "input_voltage_max_v": 30,
+    "continuous_current_per_channel_a": 12.5,
+    "peak_current_per_channel_a": 25,
+    "channel_count": 2,
+    "power_w": null,
+    "weight_g": 116,
+    "length_mm": 70,
+    "width_mm": 45,
+    "height_mm": 18,
+    "price_estimate": 71,
+    "currency": "USD",
+    "documentation_available": false,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-f54a1cf764f5f70bd0f63f6b",
+    "manufacturer": "Development Sample Labs",
+    "name": "Dual Motor Controller DMC-40",
+    "model": "DMC-40",
+    "manufacturer_part_number": "DEV-DMC-40",
+    "category": "motor_driver",
+    "subcategory": "brushed_dc",
+    "description": "Development-only dual-channel mobile robot motor controller sample.",
+    "product_summary": "Dual-channel brushed DC controller for 24 V robot drive systems.",
+    "intended_applications": [
+      "mobile robots",
+      "robotic rovers"
+    ],
+    "important_features": [
+      "dual channel",
+      "current limiting"
+    ],
+    "motor_types": [
+      "brushed_dc"
+    ],
+    "control_interfaces": [
+      "PWM",
+      "CAN"
+    ],
+    "communication_interfaces": [
+      "CAN"
+    ],
+    "supported_operating_systems": [],
+    "supported_software": [],
+    "input_voltage_min_v": 6,
+    "input_voltage_max_v": 34,
+    "continuous_current_per_channel_a": 15.0,
+    "peak_current_per_channel_a": 30,
+    "channel_count": 2,
+    "power_w": null,
+    "weight_g": 128,
+    "length_mm": 70,
+    "width_mm": 45,
+    "height_mm": 18,
+    "price_estimate": 83,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-54a499d65c52e59e1776f997",
+    "manufacturer": "Development Sample Labs",
+    "name": "Dual Motor Controller DMC-50",
+    "model": "DMC-50",
+    "manufacturer_part_number": "DEV-DMC-50",
+    "category": "motor_driver",
+    "subcategory": "brushed_dc",
+    "description": "Development-only dual-channel mobile robot motor controller sample.",
+    "product_summary": "Dual-channel brushed DC controller for 27 V robot drive systems.",
+    "intended_applications": [
+      "mobile robots",
+      "robotic rovers"
+    ],
+    "important_features": [
+      "dual channel",
+      "current limiting"
+    ],
+    "motor_types": [
+      "brushed_dc"
+    ],
+    "control_interfaces": [
+      "PWM",
+      "UART"
+    ],
+    "communication_interfaces": [
+      "UART"
+    ],
+    "supported_operating_systems": [],
+    "supported_software": [],
+    "input_voltage_min_v": 6,
+    "input_voltage_max_v": 38,
+    "continuous_current_per_channel_a": 17.5,
+    "peak_current_per_channel_a": 35,
+    "channel_count": 2,
+    "power_w": null,
+    "weight_g": 140,
+    "length_mm": 70,
+    "width_mm": 45,
+    "height_mm": 18,
+    "price_estimate": 95,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-e735e1ee3e71223199f81940",
+    "manufacturer": "Development Sample Labs",
+    "name": "Dual Motor Controller DMC-60",
+    "model": "DMC-60",
+    "manufacturer_part_number": "DEV-DMC-60",
+    "category": "motor_driver",
+    "subcategory": "brushed_dc",
+    "description": "Development-only dual-channel mobile robot motor controller sample.",
+    "product_summary": "Dual-channel brushed DC controller for 30 V robot drive systems.",
+    "intended_applications": [
+      "mobile robots",
+      "robotic rovers"
+    ],
+    "important_features": [
+      "dual channel",
+      "current limiting"
+    ],
+    "motor_types": [
+      "brushed_dc"
+    ],
+    "control_interfaces": [
+      "PWM",
+      "CAN"
+    ],
+    "communication_interfaces": [
+      "CAN"
+    ],
+    "supported_operating_systems": [],
+    "supported_software": [],
+    "input_voltage_min_v": 6,
+    "input_voltage_max_v": 42,
+    "continuous_current_per_channel_a": 20.0,
+    "peak_current_per_channel_a": 40,
+    "channel_count": 2,
+    "power_w": null,
+    "weight_g": 152,
+    "length_mm": 70,
+    "width_mm": 45,
+    "height_mm": 18,
+    "price_estimate": 107,
+    "currency": "USD",
+    "documentation_available": false,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-342fa680efa40f2cda770713",
+    "manufacturer": "Development Sample Labs",
+    "name": "Dual Motor Controller DMC-70",
+    "model": "DMC-70",
+    "manufacturer_part_number": "DEV-DMC-70",
+    "category": "motor_driver",
+    "subcategory": "brushed_dc",
+    "description": "Development-only dual-channel mobile robot motor controller sample.",
+    "product_summary": "Dual-channel brushed DC controller for 33 V robot drive systems.",
+    "intended_applications": [
+      "mobile robots",
+      "robotic rovers"
+    ],
+    "important_features": [
+      "dual channel",
+      "current limiting"
+    ],
+    "motor_types": [
+      "brushed_dc"
+    ],
+    "control_interfaces": [
+      "PWM",
+      "UART"
+    ],
+    "communication_interfaces": [
+      "UART"
+    ],
+    "supported_operating_systems": [],
+    "supported_software": [],
+    "input_voltage_min_v": 6,
+    "input_voltage_max_v": 46,
+    "continuous_current_per_channel_a": 22.5,
+    "peak_current_per_channel_a": 45,
+    "channel_count": 4,
+    "power_w": null,
+    "weight_g": 164,
+    "length_mm": 70,
+    "width_mm": 45,
+    "height_mm": 18,
+    "price_estimate": 119,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-7627185ba5a48ae87c515a64",
+    "manufacturer": "Development Sample Labs",
+    "name": "Dual Motor Controller DMC-80",
+    "model": "DMC-80",
+    "manufacturer_part_number": "DEV-DMC-80",
+    "category": "motor_driver",
+    "subcategory": "brushed_dc",
+    "description": "Development-only dual-channel mobile robot motor controller sample.",
+    "product_summary": "Dual-channel brushed DC controller for 36 V robot drive systems.",
+    "intended_applications": [
+      "mobile robots",
+      "robotic rovers"
+    ],
+    "important_features": [
+      "dual channel",
+      "current limiting"
+    ],
+    "motor_types": [
+      "brushed_dc"
+    ],
+    "control_interfaces": [
+      "PWM",
+      "CAN"
+    ],
+    "communication_interfaces": [
+      "CAN"
+    ],
+    "supported_operating_systems": [],
+    "supported_software": [],
+    "input_voltage_min_v": 6,
+    "input_voltage_max_v": 50,
+    "continuous_current_per_channel_a": 25.0,
+    "peak_current_per_channel_a": 50,
+    "channel_count": 4,
+    "power_w": null,
+    "weight_g": 176,
+    "length_mm": 70,
+    "width_mm": 45,
+    "height_mm": 18,
+    "price_estimate": 131,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-51ff0f45cee62f430d6a7525",
+    "manufacturer": "Development Sample Computing",
+    "name": "Robot Compute Module RCM-100",
+    "model": "RCM-100",
+    "manufacturer_part_number": "DEV-RCM-100",
+    "category": "onboard_computer",
+    "subcategory": "single_board_computer",
+    "description": "Development-only onboard computer catalog sample.",
+    "product_summary": "Compact 6 GB robotics computer with Linux support.",
+    "intended_applications": [
+      "robotics compute",
+      "ROS development"
+    ],
+    "important_features": [
+      "GPIO",
+      "hardware acceleration"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "GPIO",
+      "PWM",
+      "I2C",
+      "SPI"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet",
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Ubuntu 22.04",
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2 Humble"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 13,
+    "weight_g": 70,
+    "length_mm": 85,
+    "width_mm": 56,
+    "height_mm": 20,
+    "price_estimate": 105,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-643a29801523635c93e91978",
+    "manufacturer": "Development Sample Computing",
+    "name": "Robot Compute Module RCM-200",
+    "model": "RCM-200",
+    "manufacturer_part_number": "DEV-RCM-200",
+    "category": "onboard_computer",
+    "subcategory": "single_board_computer",
+    "description": "Development-only onboard computer catalog sample.",
+    "product_summary": "Compact 8 GB robotics computer with Linux support.",
+    "intended_applications": [
+      "robotics compute",
+      "ROS development"
+    ],
+    "important_features": [
+      "GPIO",
+      "hardware acceleration"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "GPIO",
+      "PWM",
+      "I2C",
+      "SPI"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet",
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Ubuntu 22.04",
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2 Humble"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 16,
+    "weight_g": 90,
+    "length_mm": 85,
+    "width_mm": 56,
+    "height_mm": 20,
+    "price_estimate": 150,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-106e5d669a0ac21b9ba67fad",
+    "manufacturer": "Development Sample Computing",
+    "name": "Robot Compute Module RCM-300",
+    "model": "RCM-300",
+    "manufacturer_part_number": "DEV-RCM-300",
+    "category": "onboard_computer",
+    "subcategory": "single_board_computer",
+    "description": "Development-only onboard computer catalog sample.",
+    "product_summary": "Compact 10 GB robotics computer with Linux support.",
+    "intended_applications": [
+      "robotics compute",
+      "ROS development"
+    ],
+    "important_features": [
+      "GPIO",
+      "hardware acceleration"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "GPIO",
+      "PWM",
+      "I2C",
+      "SPI"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet",
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Ubuntu 22.04",
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2 Humble"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 19,
+    "weight_g": 110,
+    "length_mm": 85,
+    "width_mm": 56,
+    "height_mm": 20,
+    "price_estimate": 195,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-5d4b5afd25e167bd087c00da",
+    "manufacturer": "Development Sample Computing",
+    "name": "Robot Compute Module RCM-400",
+    "model": "RCM-400",
+    "manufacturer_part_number": "DEV-RCM-400",
+    "category": "onboard_computer",
+    "subcategory": "single_board_computer",
+    "description": "Development-only onboard computer catalog sample.",
+    "product_summary": "Compact 12 GB robotics computer with Linux support.",
+    "intended_applications": [
+      "robotics compute",
+      "ROS development"
+    ],
+    "important_features": [
+      "GPIO",
+      "hardware acceleration"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "GPIO",
+      "PWM",
+      "I2C",
+      "SPI"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet",
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Ubuntu 22.04",
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2 Humble"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 22,
+    "weight_g": 130,
+    "length_mm": 85,
+    "width_mm": 56,
+    "height_mm": 20,
+    "price_estimate": 240,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-9229104710d5d175066d72ea",
+    "manufacturer": "Development Sample Computing",
+    "name": "Robot Compute Module RCM-500",
+    "model": "RCM-500",
+    "manufacturer_part_number": "DEV-RCM-500",
+    "category": "onboard_computer",
+    "subcategory": "single_board_computer",
+    "description": "Development-only onboard computer catalog sample.",
+    "product_summary": "Compact 14 GB robotics computer with Linux support.",
+    "intended_applications": [
+      "robotics compute",
+      "ROS development"
+    ],
+    "important_features": [
+      "GPIO",
+      "hardware acceleration"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "GPIO",
+      "PWM",
+      "I2C",
+      "SPI"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet",
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Ubuntu 22.04",
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2 Humble"
+    ],
+    "input_voltage_min_v": 9,
+    "input_voltage_max_v": 24,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 25,
+    "weight_g": 150,
+    "length_mm": 85,
+    "width_mm": 56,
+    "height_mm": 20,
+    "price_estimate": 285,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-e8ef5036773c60c6b8e5aedc",
+    "manufacturer": "Development Sample Computing",
+    "name": "Robot Compute Module RCM-600",
+    "model": "RCM-600",
+    "manufacturer_part_number": "DEV-RCM-600",
+    "category": "onboard_computer",
+    "subcategory": "single_board_computer",
+    "description": "Development-only onboard computer catalog sample.",
+    "product_summary": "Compact 16 GB robotics computer with Linux support.",
+    "intended_applications": [
+      "robotics compute",
+      "ROS development"
+    ],
+    "important_features": [
+      "GPIO",
+      "hardware acceleration"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "GPIO",
+      "PWM",
+      "I2C",
+      "SPI"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet",
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Ubuntu 22.04",
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2 Humble"
+    ],
+    "input_voltage_min_v": 9,
+    "input_voltage_max_v": 24,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 28,
+    "weight_g": 170,
+    "length_mm": 85,
+    "width_mm": 56,
+    "height_mm": 20,
+    "price_estimate": 330,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-829b4636ff10687e9a5b3017",
+    "manufacturer": "Development Sample Computing",
+    "name": "Robot Compute Module RCM-700",
+    "model": "RCM-700",
+    "manufacturer_part_number": "DEV-RCM-700",
+    "category": "onboard_computer",
+    "subcategory": "single_board_computer",
+    "description": "Development-only onboard computer catalog sample.",
+    "product_summary": "Compact 18 GB robotics computer with Linux support.",
+    "intended_applications": [
+      "robotics compute",
+      "ROS development"
+    ],
+    "important_features": [
+      "GPIO",
+      "hardware acceleration"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "GPIO",
+      "PWM",
+      "I2C",
+      "SPI"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet",
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Ubuntu 22.04",
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2 Humble"
+    ],
+    "input_voltage_min_v": 9,
+    "input_voltage_max_v": 24,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 31,
+    "weight_g": 190,
+    "length_mm": 85,
+    "width_mm": 56,
+    "height_mm": 20,
+    "price_estimate": 375,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-581c493a64d4743d4ac7b211",
+    "manufacturer": "Development Sample Computing",
+    "name": "Robot Compute Module RCM-800",
+    "model": "RCM-800",
+    "manufacturer_part_number": "DEV-RCM-800",
+    "category": "onboard_computer",
+    "subcategory": "single_board_computer",
+    "description": "Development-only onboard computer catalog sample.",
+    "product_summary": "Compact 20 GB robotics computer with Linux support.",
+    "intended_applications": [
+      "robotics compute",
+      "ROS development"
+    ],
+    "important_features": [
+      "GPIO",
+      "hardware acceleration"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "GPIO",
+      "PWM",
+      "I2C",
+      "SPI"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet",
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Ubuntu 22.04",
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2 Humble"
+    ],
+    "input_voltage_min_v": 9,
+    "input_voltage_max_v": 24,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 34,
+    "weight_g": 210,
+    "length_mm": 85,
+    "width_mm": 56,
+    "height_mm": 20,
+    "price_estimate": 420,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.55,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-8cfefc9a5d2b23b706815a8e",
+    "manufacturer": "Development Sample Sensing",
+    "name": "Planar Ranging Sensor PRS-100",
+    "model": "PRS-100",
+    "manufacturer_part_number": "DEV-PRS-100",
+    "category": "lidar",
+    "subcategory": "2d_lidar",
+    "description": "Development-only laser ranging sensor sample; not a verified manufacturer specification.",
+    "product_summary": "Robotics ranging sensor with approximately 8 m sample range.",
+    "intended_applications": [
+      "obstacle detection",
+      "robot localization"
+    ],
+    "important_features": [
+      "range scanning",
+      "serial data"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "UART"
+    ],
+    "communication_interfaces": [
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 5,
+    "weight_g": 155,
+    "length_mm": 75,
+    "width_mm": 75,
+    "height_mm": 45,
+    "price_estimate": 145,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.5,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-8d58f9cb96fb6dd87664fc22",
+    "manufacturer": "Development Sample Sensing",
+    "name": "Planar Ranging Sensor PRS-200",
+    "model": "PRS-200",
+    "manufacturer_part_number": "DEV-PRS-200",
+    "category": "lidar",
+    "subcategory": "2d_lidar",
+    "description": "Development-only laser ranging sensor sample; not a verified manufacturer specification.",
+    "product_summary": "Robotics ranging sensor with approximately 11 m sample range.",
+    "intended_applications": [
+      "obstacle detection",
+      "robot localization"
+    ],
+    "important_features": [
+      "range scanning",
+      "serial data"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "USB"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet"
+    ],
+    "supported_operating_systems": [
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 6,
+    "weight_g": 190,
+    "length_mm": 75,
+    "width_mm": 75,
+    "height_mm": 45,
+    "price_estimate": 200,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.5,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-94604b4cb4401231d9b69368",
+    "manufacturer": "Development Sample Sensing",
+    "name": "Planar Ranging Sensor PRS-300",
+    "model": "PRS-300",
+    "manufacturer_part_number": "DEV-PRS-300",
+    "category": "lidar",
+    "subcategory": "2d_lidar",
+    "description": "Development-only laser ranging sensor sample; not a verified manufacturer specification.",
+    "product_summary": "Robotics ranging sensor with approximately 14 m sample range.",
+    "intended_applications": [
+      "obstacle detection",
+      "robot localization"
+    ],
+    "important_features": [
+      "range scanning",
+      "serial data"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "UART"
+    ],
+    "communication_interfaces": [
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 7,
+    "weight_g": 225,
+    "length_mm": 75,
+    "width_mm": 75,
+    "height_mm": 45,
+    "price_estimate": 255,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.5,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-7aa3a3f86670f8ff12a1e756",
+    "manufacturer": "Development Sample Sensing",
+    "name": "Planar Ranging Sensor PRS-400",
+    "model": "PRS-400",
+    "manufacturer_part_number": "DEV-PRS-400",
+    "category": "lidar",
+    "subcategory": "2d_lidar",
+    "description": "Development-only laser ranging sensor sample; not a verified manufacturer specification.",
+    "product_summary": "Robotics ranging sensor with approximately 17 m sample range.",
+    "intended_applications": [
+      "obstacle detection",
+      "robot localization"
+    ],
+    "important_features": [
+      "range scanning",
+      "serial data"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "USB"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet"
+    ],
+    "supported_operating_systems": [
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 8,
+    "weight_g": 260,
+    "length_mm": 75,
+    "width_mm": 75,
+    "height_mm": 45,
+    "price_estimate": 310,
+    "currency": "USD",
+    "documentation_available": false,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.5,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-270b7ef3dae4b9af7a10a16f",
+    "manufacturer": "Development Sample Sensing",
+    "name": "Planar Ranging Sensor PRS-500",
+    "model": "PRS-500",
+    "manufacturer_part_number": "DEV-PRS-500",
+    "category": "lidar",
+    "subcategory": "2d_lidar",
+    "description": "Development-only laser ranging sensor sample; not a verified manufacturer specification.",
+    "product_summary": "Robotics ranging sensor with approximately 20 m sample range.",
+    "intended_applications": [
+      "obstacle detection",
+      "robot localization"
+    ],
+    "important_features": [
+      "range scanning",
+      "serial data"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "UART"
+    ],
+    "communication_interfaces": [
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 9,
+    "weight_g": 295,
+    "length_mm": 75,
+    "width_mm": 75,
+    "height_mm": 45,
+    "price_estimate": 365,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.5,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-add7c105b461943755e9057b",
+    "manufacturer": "Development Sample Sensing",
+    "name": "Planar Ranging Sensor PRS-600",
+    "model": "PRS-600",
+    "manufacturer_part_number": "DEV-PRS-600",
+    "category": "lidar",
+    "subcategory": "3d_lidar",
+    "description": "Development-only laser ranging sensor sample; not a verified manufacturer specification.",
+    "product_summary": "Robotics ranging sensor with approximately 23 m sample range.",
+    "intended_applications": [
+      "obstacle detection",
+      "robot localization"
+    ],
+    "important_features": [
+      "range scanning",
+      "serial data"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "USB"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet"
+    ],
+    "supported_operating_systems": [
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 10,
+    "weight_g": 330,
+    "length_mm": 75,
+    "width_mm": 75,
+    "height_mm": 45,
+    "price_estimate": 420,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.5,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-17b6e646e8ee09ed597de5b1",
+    "manufacturer": "Development Sample Sensing",
+    "name": "Planar Ranging Sensor PRS-700",
+    "model": "PRS-700",
+    "manufacturer_part_number": "DEV-PRS-700",
+    "category": "lidar",
+    "subcategory": "3d_lidar",
+    "description": "Development-only laser ranging sensor sample; not a verified manufacturer specification.",
+    "product_summary": "Robotics ranging sensor with approximately 26 m sample range.",
+    "intended_applications": [
+      "obstacle detection",
+      "robot localization"
+    ],
+    "important_features": [
+      "range scanning",
+      "serial data"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "UART"
+    ],
+    "communication_interfaces": [
+      "UART"
+    ],
+    "supported_operating_systems": [
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 11,
+    "weight_g": 365,
+    "length_mm": 75,
+    "width_mm": 75,
+    "height_mm": 45,
+    "price_estimate": 475,
+    "currency": "USD",
+    "documentation_available": true,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.5,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  },
+  {
+    "product_id": "product-686556cb21b51841f8508aff",
+    "manufacturer": "Development Sample Sensing",
+    "name": "Planar Ranging Sensor PRS-800",
+    "model": "PRS-800",
+    "manufacturer_part_number": "DEV-PRS-800",
+    "category": "lidar",
+    "subcategory": "3d_lidar",
+    "description": "Development-only laser ranging sensor sample; not a verified manufacturer specification.",
+    "product_summary": "Robotics ranging sensor with approximately 29 m sample range.",
+    "intended_applications": [
+      "obstacle detection",
+      "robot localization"
+    ],
+    "important_features": [
+      "range scanning",
+      "serial data"
+    ],
+    "motor_types": [],
+    "control_interfaces": [
+      "USB"
+    ],
+    "communication_interfaces": [
+      "USB",
+      "Ethernet"
+    ],
+    "supported_operating_systems": [
+      "Linux"
+    ],
+    "supported_software": [
+      "ROS2"
+    ],
+    "input_voltage_min_v": 5,
+    "input_voltage_max_v": 12,
+    "continuous_current_a": null,
+    "continuous_current_per_channel_a": null,
+    "peak_current_a": null,
+    "peak_current_per_channel_a": null,
+    "channel_count": null,
+    "power_w": 12,
+    "weight_g": 400,
+    "length_mm": 75,
+    "width_mm": 75,
+    "height_mm": 45,
+    "price_estimate": 530,
+    "currency": "USD",
+    "documentation_available": false,
+    "lifecycle_status": "development_sample",
+    "specification_confidence": 0.5,
+    "source_type": "development_sample",
+    "source_url": "",
+    "created_at": "2026-08-01T00:54:26.444669+00:00",
+    "updated_at": "2026-08-01T00:54:26.444669+00:00"
+  }
+]

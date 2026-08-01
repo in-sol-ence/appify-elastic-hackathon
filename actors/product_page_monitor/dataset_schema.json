@@ -1,0 +1,1 @@
+{"actorSpecification":1,"fields":{},"views":{"overview":{"title":"Product observations","transformation":{"fields":["product_id","source_url","observed_at","commercial","extraction"]},"display":{"component":"table","properties":{}}}}}
