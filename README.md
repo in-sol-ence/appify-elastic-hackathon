@@ -278,7 +278,8 @@ Create an Apify API token and add the following to `.env`:
 
 ```env
 APIFY_API_TOKEN=your_token
-APIFY_PRODUCT_MONITOR_ACTOR_ID=your_actor_id
+APIFY_PRODUCT_MONITOR_ACTOR_ID=your_product_monitor_actor_id
+APIFY_GITHUB_DRIVER_ACTOR_ID=your_github_driver_finder_actor_id
 APIFY_PRODUCT_ANALYSIS_ACTOR_ID=apify/google-search-scraper
 APIFY_PRODUCT_ANALYSIS_COUNTRY=us
 APIFY_PRODUCT_ANALYSIS_TIMEOUT_SECS=120
@@ -309,7 +310,7 @@ apify push
 cd ../..
 ```
 
-Set the returned Actor ID as `APIFY_PRODUCT_MONITOR_ACTOR_ID`. Actor input and dataset contracts are documented by `input_schema.json` and `dataset_schema.json`. Reusable reviewed Task and schedule configurations can be created with:
+Set the returned Actor ID as `APIFY_PRODUCT_MONITOR_ACTOR_ID`. Deploy `actors/github_driver_finder` the same way and set its separate ID as `APIFY_GITHUB_DRIVER_ACTOR_ID`. The latter powers the **Check GitHub for drivers with Apify** action on Live Products; repository matches remain unverified candidates. Actor input and dataset contracts are documented by their `input_schema.json` and `dataset_schema.json` files. Reusable reviewed Task and schedule configurations can be created with:
 
 ```bash
 python scripts/create_apify_tasks.py path/to/reviewed-task.json

@@ -9,6 +9,9 @@ from services.compatibility import evaluate_product_compatibility
 from services.elasticsearch_client import ProductSearchError
 from services.product_evidence_search import search_product_evidence
 from services.product_search import find_similar_products, search_products
+from services.online_product_discovery import discover_online_products
+from services.product_ranking import rank_results
+from services.apify_client import ApifyServiceError
 from services.product_selection import apply_catalog_product, reject_catalog_product
 from services.search_profile import build_component_search_profile
 from ui.persistence import save_wizard_project, show_repository_error
@@ -60,20 +63,37 @@ def render(project,report,repository:ProjectRepository)->None:
     except ValueError as error:st.error(str(error));return
     st.markdown("#### Search profile")
     st.write(f"**Role:** {profile.role_name} · **Required milestone:** {profile.required_milestone or 'Not assigned'} · **Criticality:** {profile.criticality}/5")
-    st.write("**Hard requirements**");st.markdown("\n".join(f"- {r.description}" for r in profile.hard_requirements) or "- None")
+    st.write("**Compatibility requirements (evaluated after search)**");st.markdown("\n".join(f"- {r.description}" for r in profile.hard_requirements) or "- None")
     st.write("**Preferences**");st.markdown("\n".join(f"- {r.description}" for r in profile.preferred_requirements) or "- None")
     st.write(f"**Connected components:** {', '.join(profile.connected_components) or 'None'}")
-    request_text=st.text_area("Search description",profile.natural_language_description,key=f"find_query_{role_id}")
+    st.caption(f"Elasticsearch searches primarily for the component name: **{profile.role_name}**. Detailed requirements are checked after retrieval.")
+    request_text=st.text_area("Additional search context (optional)",profile.natural_language_description,key=f"find_query_{role_id}")
+    search_online=st.checkbox("Pull fresh products from approved online suppliers with Apify",value=True,key=f"find_online_{role_id}")
     left,right=st.columns(2)
     if left.button("Search Products",type="primary",key="find_search"):
-        try:
-            edited=profile.model_copy(update={"natural_language_description":request_text});results=search_products(edited)
-            state.editing_state["product_results"]=[r.model_dump(mode="json") for r in results];state.editing_state["product_profile"]=edited.model_dump(mode="json")
-            state.editing_state["compare_products"]=[]
-            if not results:st.info("No indexed products met all hard requirements.")
-        except ProductSearchError as error:st.error(str(error))
+        edited=profile.model_copy(update={"natural_language_description":request_text});results=[]
+        try:results=search_products(edited)
+        except ProductSearchError as error:
+            if search_online:st.warning(f"Elasticsearch catalog search was unavailable: {error}. Continuing with fresh online discovery.")
+            else:st.error(str(error))
+        if search_online:
+            with st.spinner("Apify is searching approved supplier pages. This can take up to two minutes..."):
+                try:
+                    online=discover_online_products(edited);known={r.product.source_url or r.product.product_id for r in results};results.extend(r for r in online if (r.product.source_url or r.product.product_id) not in known);results=rank_results(results)
+                except ApifyServiceError as error:st.warning(f"Online discovery was unavailable: {error}. Showing any indexed Elasticsearch results.")
+        state.editing_state["product_results"]=[r.model_dump(mode="json") for r in results];state.editing_state["product_profile"]=edited.model_dump(mode="json");state.editing_state["compare_products"]=[]
+        if not results:st.info("No source-backed products were found for this component name.")
     if right.button("Reset Search",key="find_reset"):
         state.editing_state.pop("product_results",None);state.editing_state.pop("product_profile",None);st.rerun()
+    st.markdown("#### Check approved suppliers with Apify")
+    st.caption("Runs the deployed Apify Actor against approved online supplier search pages and opens the matching product pages.")
+    if st.button(f"Check online for {profile.role_name} with Apify",key=f"apify_check_{role_id}",use_container_width=True):
+        edited=profile.model_copy(update={"natural_language_description":request_text})
+        with st.spinner(f"Apify is checking online suppliers for {profile.role_name}. This can take up to two minutes..."):
+            try:
+                online=discover_online_products(edited);existing=[ProductSearchResult.model_validate(item) for item in state.editing_state.get("product_results",[])];known={r.product.source_url or r.product.product_id for r in existing};combined=rank_results([*existing,*(r for r in online if (r.product.source_url or r.product.product_id) not in known)])
+                state.editing_state["product_results"]=[r.model_dump(mode="json") for r in combined];state.editing_state["product_profile"]=edited.model_dump(mode="json");st.success(f"Apify found {len(online)} source-backed online product candidate(s).")
+            except ApifyServiceError as error:st.error(f"Apify online check failed: {error}")
     raw=state.editing_state.get("product_results",[]);results=[ProductSearchResult.model_validate(item) for item in raw]
     if os.getenv("INCLUDE_DEVELOPMENT_PRODUCTS")!="1":results=[result for result in results if result.product.source_type!="development_sample"]
     if not results:return

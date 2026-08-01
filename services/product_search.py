@@ -34,9 +34,15 @@ def _catalog_filters()->list[dict]:
 
 
 def build_product_query(profile:ComponentSearchProfile,semantic:bool=True)->dict:
-    should=[{"multi_match":{"query":profile.natural_language_description,"fields":["name^4","manufacturer^2","model^3","manufacturer_part_number^5","product_summary^3","description","intended_applications","important_features"],"type":"best_fields"}}]
-    if semantic:should.append({"semantic":{"field":"semantic_text","query":profile.natural_language_description}})
-    return {"bool":{"filter":[*_catalog_filters(),*hard_filters(profile)],"must_not":_sample_exclusion(),"should":should,"minimum_should_match":1}}
+    # Keep retrieval broad: incomplete specifications are shown and classified by
+    # the deterministic compatibility pass instead of disappearing at search time.
+    should=[
+        {"multi_match":{"query":profile.role_name,"fields":["name^6","category^6","subcategory^3","product_summary^4","description^2","intended_applications^2","important_features^2","manufacturer","model","manufacturer_part_number"],"type":"best_fields","fuzziness":"AUTO"}},
+    ]
+    if profile.natural_language_description and profile.natural_language_description.lower()!=profile.role_name.lower():
+        should.append({"multi_match":{"query":profile.natural_language_description,"fields":["name^3","category^4","product_summary^3","description","intended_applications","important_features"],"type":"best_fields"}})
+    if semantic:should.append({"semantic":{"field":"semantic_text","query":profile.role_name}})
+    return {"bool":{"filter":[*_catalog_filters(),{"term":{"category":profile.category}}],"must_not":_sample_exclusion(),"should":should,"minimum_should_match":1}}
 
 
 def _source_backed(product:Product)->bool:
@@ -52,7 +58,7 @@ def _results(profile,hits,fallback=False):
         if not _source_backed(product):continue
         evaluation=evaluate_product_compatibility(profile,product);search_score=float(hit.get("_score") or 0)
         fit,breakdown=score_product(profile,product,evaluation,search_score)
-        results.append(ProductSearchResult(product=product,search_score=search_score,project_fit_score=fit,compatibility_status=evaluation.status,matched_requirements=evaluation.passed_requirements,missing_fields=evaluation.unknown_requirements,search_explanation="Keyword search used because semantic search was unavailable." if fallback else "Hybrid lexical and semantic ranking with structured hard filters.",score_explanation=breakdown))
+        results.append(ProductSearchResult(product=product,search_score=search_score,project_fit_score=fit,compatibility_status=evaluation.status,matched_requirements=evaluation.passed_requirements,missing_fields=evaluation.unknown_requirements,search_explanation="Keyword search used for the component name because semantic search was unavailable; technical compatibility was evaluated afterward." if fallback else "Broad component-name and category retrieval with semantic relevance; technical compatibility was evaluated afterward.",score_explanation=breakdown))
     return rank_results(results)
 
 

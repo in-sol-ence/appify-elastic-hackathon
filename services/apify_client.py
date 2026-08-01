@@ -28,10 +28,10 @@ def _webhooks():
  return [{'eventTypes':['ACTOR.RUN.SUCCEEDED','ACTOR.RUN.FAILED','ACTOR.RUN.TIMED_OUT','ACTOR.RUN.ABORTED'],'requestUrl':base.rstrip('/')+'/webhooks/apify/actor-run','payloadTemplate':'{\"eventType\":\"{{eventType}}\",\"resource\":{{resource}}}','headersTemplate':'{\"X-Apify-Webhook-Secret\":\"'+secret+'\"}'}]
 class ApifyService:
  def __init__(self,client:ApifyClient|None=None):self.client=client or get_apify_client()
- def start_actor(self,run_input:dict,actor_id:str|None=None)->dict:
+ def start_actor(self,run_input:dict,actor_id:str|None=None,webhooks_enabled:bool=True)->dict:
   actor_id=actor_id or os.getenv('APIFY_PRODUCT_MONITOR_ACTOR_ID')
   if not actor_id:raise ApifyServiceError('APIFY_PRODUCT_MONITOR_ACTOR_ID is missing.')
-  try:return self.client.actor(actor_id).start(run_input=run_input,build=os.getenv('APIFY_DEFAULT_BUILD','latest'),max_total_charge_usd=Decimal(os.getenv('APIFY_MAX_RUN_COST_USD','1.00')),webhooks=_webhooks())
+  try:return self.client.actor(actor_id).start(run_input=run_input,build=os.getenv('APIFY_DEFAULT_BUILD','latest'),max_total_charge_usd=Decimal(os.getenv('APIFY_MAX_RUN_COST_USD','1.00')),webhooks=_webhooks() if webhooks_enabled else None)
   except ApifyApiError as error:raise _translate(error) from error
  def start_task(self,task_id:str,run_input:dict)->dict:
   try:return self.client.task(task_id).start(task_input=run_input,build=os.getenv('APIFY_DEFAULT_BUILD','latest'),webhooks=_webhooks())
@@ -42,7 +42,9 @@ class ApifyService:
    if not run:raise ApifyRunError('Apify run does not exist.')
    return run
   except ApifyApiError as error:raise _translate(error) from error
- def call_actor_and_get_items(self,actor_id:str,run_input:dict,timeout_secs:int=120,limit:int=100)->tuple[dict,list[dict]]:
+ def call_actor_and_get_items(self,actor_id:str|None,run_input:dict,timeout_secs:int=120,limit:int=100)->tuple[dict,list[dict]]:
+  actor_id=actor_id or os.getenv('APIFY_PRODUCT_MONITOR_ACTOR_ID')
+  if not actor_id:raise ApifyServiceError('APIFY_PRODUCT_MONITOR_ACTOR_ID is missing.')
   try:
    run=self.client.actor(actor_id).call(run_input=run_input,build=os.getenv('APIFY_DEFAULT_BUILD','latest'),max_total_charge_usd=Decimal(os.getenv('APIFY_MAX_RUN_COST_USD','1.00')),timeout_secs=timeout_secs,wait_secs=timeout_secs)
    if not run:raise ApifyRunError('Apify analysis did not return a run.')
@@ -68,9 +70,9 @@ class ApifyService:
   except ApifyApiError as error:raise _translate(error) from error
 
 def test_apify_connection(service:ApifyService|None=None)->dict:
- service=service or ApifyService();actor_id=os.getenv('APIFY_PRODUCT_MONITOR_ACTOR_ID')
+ service=service or ApifyService();actor_id=os.getenv('APIFY_PRODUCT_MONITOR_ACTOR_ID');github_actor_id=os.getenv('APIFY_GITHUB_DRIVER_ACTOR_ID')
  try:
-  user=service.client.user().get();actor=service.client.actor(actor_id).get() if actor_id else None
+  user=service.client.user().get();actor=service.client.actor(actor_id).get() if actor_id else None;github_actor=service.client.actor(github_actor_id).get() if github_actor_id else None
   datasets=service.client.datasets().list(limit=1)
-  return {'authenticated':bool(user),'user_id':(user or {}).get('id'),'actor_exists':bool(actor),'datasets_accessible':datasets is not None}
+  return {'authenticated':bool(user),'user_id':(user or {}).get('id'),'actor_exists':bool(actor),'product_monitor_actor_exists':bool(actor),'github_driver_actor_exists':bool(github_actor),'datasets_accessible':datasets is not None}
  except ApifyApiError as error:raise _translate(error) from error

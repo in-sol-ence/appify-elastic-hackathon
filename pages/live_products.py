@@ -7,6 +7,7 @@ from models.enums import RoleRequiredness
 from models.monitoring import ComponentProcurementState,MonitoringPreference
 from repositories.apify_run_repository import ApifyRunRepository
 from repositories.monitoring_repository import MonitoringRepository
+from services.apify_availability import check_product_availability
 from services.apify_run_service import start_monitoring_run
 from services.change_event_store import acknowledge_change,recent_changes
 from services.component_urgency import calculate_component_urgency
@@ -14,6 +15,8 @@ from services.elasticsearch_client import ProductSearchError
 from services.historical_product_analysis import analyze_product_history,current_product_states
 from services.monitoring_scheduler import select_monitoring_schedule
 from services.procurement_recommendation import recommend_procurement
+from services.product_driver_discovery import discover_product_drivers
+from services.apify_client import ApifyServiceError
 from services.source_health import delivery_fit,freshness
 
 def _selected(project,role_id):return next((p for p in project.products if p.component_role_id==role_id and p.primary_product),None) or next((p for p in project.products if p.component_role_id==role_id and p.selection_status.value=='Selected'),None)
@@ -44,8 +47,34 @@ def render(project,report,repository):
  st.markdown(f'### {role.role_name}');st.write(f'**Required milestone:** {project.entity_names().get(role.first_required_milestone_id,"Not assigned")} · **Required by:** {role.required_by or "Unknown"} · **Urgency:** {urgency.level} {urgency.score:.1f}/100');st.write('\n'.join(f'- {x}' for x in urgency.explanation));st.write(f'**Recommendation: {rec.action.replace("_"," ").title()}** — {rec.reason}');
  if rec.change_explanation:st.info('\n'.join(rec.change_explanation))
  st.markdown('#### Current product state')
- if product:st.write(f'{product.product_name} · {state.availability} · Delivery {fit} · Freshness {fresh}')
+ if product:
+  st.write(f'{product.product_name} · {state.availability} · Delivery {fit} · Freshness {fresh}')
+  product_url=st.text_input('Product URL to check with Apify',value=product.supplier_url or product.manufacturer_url,key=f'apify_product_url_{role_id}',help='This runs the project product-page Actor once and reads schema.org product availability from the page.')
+  if st.button('Check URL availability',key=f'apify_availability_{role_id}',type='primary'):
+   try:
+    with st.spinner('Apify is checking the product page...'):
+     app_state.editing_state[f'apify_availability_result_{role_id}']=check_product_availability(product_url,product.supplier_name)
+   except Exception as error:st.error(f'Apify availability check failed: {error}')
+  availability_result=app_state.editing_state.get(f'apify_availability_result_{role_id}')
+  if availability_result and availability_result.get('url')==product_url:
+   if availability_result.get('status')=='success':
+    price=availability_result.get('price');currency=availability_result.get('currency') or ''
+    st.success(f"Availability: {availability_result['availability'].replace('_',' ').title()}"+(f" · Price: {currency} {price}" if price is not None else ''))
+   else:st.warning(f"Apify could not read availability from this page: {availability_result.get('error') or 'No structured product data found.'}")
+   st.caption(f"Apify run {availability_result.get('run_id') or 'unknown'} · checked {availability_result.get('checked_at') or 'just now'} · confidence {availability_result.get('confidence',0):.0%}")
  else:st.warning('No selected product. Select a compatible catalog product first.')
+ st.markdown('#### GitHub drivers and integrations')
+ st.caption('Uses the dedicated GitHub Driver Finder Apify Actor. Matches are unverified candidates, not proof of compatibility or safety.')
+ driver_key=f'github_driver_candidates_{product.id}' if product else None
+ if st.button('Check GitHub for drivers with Apify',key=f'check_drivers_{role.id}',disabled=not product,use_container_width=True):
+  with st.spinner('The GitHub Driver Finder Actor is checking repositories...'):
+   try:
+    candidates=discover_product_drivers(product.product_name,product.manufacturer,product.model,project.id,role.id,product.elastic_product_id or product.id);app_state.editing_state[driver_key]=candidates;st.success(f'Found {len(candidates)} unverified driver or integration candidate(s).')
+   except ApifyServiceError as error:st.error(str(error))
+ if product:
+  for index,candidate in enumerate(app_state.editing_state.get(driver_key,[])):
+   with st.container(border=True):
+    st.write(f"**{candidate.get('repository_full_name') or candidate.get('repository_name')}** · ★ {candidate.get('stars',0)} · {candidate.get('language','Unknown')}");st.write(candidate.get('description') or 'No description provided.');st.caption(f"Updated: {candidate.get('updated_at') or 'Unknown'} · {'Archived' if candidate.get('archived') else 'Active repository'} · Candidate unverified");st.link_button('Open GitHub repository',candidate['repository_url'],key=f'github_driver_link_{role.id}_{index}')
  role_sources=[s for s in sources if s.component_role_id==role_id]
  st.markdown('#### Monitoring sources')
  for source in role_sources:

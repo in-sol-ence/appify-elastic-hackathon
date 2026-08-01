@@ -19,7 +19,11 @@ def bad_request():
 def test_query_has_exact_numeric_and_multiple_interface_filters():
  filters=hard_filters(setup_profile());text=str(filters);assert "category" in text and "input_voltage_min_v" in text and "continuous_current" in text and "PWM" in text and "UART" in text
 def test_natural_language_query_and_no_results():
- profile=setup_profile();query=build_product_query(profile);assert profile.natural_language_description in str(query);assert "development_sample" in str(query) and "source_url" in str(query);assert search_products(profile,client=Client([{"hits":{"hits":[]}}]))==[]
+ profile=setup_profile();query=build_product_query(profile);assert profile.role_name in str(query) and profile.natural_language_description in str(query);assert "development_sample" in str(query) and "source_url" in str(query);assert search_products(profile,client=Client([{"hits":{"hits":[]}}]))==[]
+def test_retrieval_does_not_filter_on_detailed_technical_specs():
+ query=build_product_query(setup_profile());text=str(query['bool']['filter'])
+ assert 'category' in text and 'source_url' in text
+ assert 'input_voltage' not in text and 'continuous_current' not in text and 'control_interfaces' not in text
 def test_semantic_failure_uses_lexical_fallback():
  results=search_products(setup_profile(),client=Client([bad_request,hit()]));assert results and "Keyword search" in results[0].search_explanation
 
