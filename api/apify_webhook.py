@@ -8,6 +8,7 @@ from repositories.monitoring_repository import MonitoringRepository
 from repositories.project_repository import ProjectRepository
 from services.apify_client import ApifyService,ApifyServiceError
 from services.component_urgency import calculate_component_urgency
+from services.discovery_ingestion import ingest_discovery_candidate
 from services.observation_ingestion import ingest_observation
 from services.monitoring_scheduler import reconcile_source_schedule,select_monitoring_schedule
 app=FastAPI(title='Robotics BOM Guardian Apify Webhook')
@@ -42,6 +43,13 @@ async def apify_actor_run(request:Request,x_apify_webhook_secret:str|None=Header
   if not dataset_id:raise ValueError('Completed run has no default dataset.')
   items=ApifyService().get_dataset_items(dataset_id);project=ProjectRepository().get_project(record.project_id)
   if not project:raise ValueError('Project no longer exists.')
+  if record.run_type=='product_discovery':
+   valid=invalid=0
+   for item in items:
+    try:ingest_discovery_candidate(item,project);valid+=1
+    except Exception:invalid+=1
+   runs.update_run(run_id,status=status,default_dataset_id=dataset_id,finished_at=metadata.get('finishedAt'),items_received=len(items),ingestion_status='completed' if valid else 'failed',error_message=f'{invalid} invalid discovery item(s)' if invalid else None)
+   return {'status':'completed','run_id':run_id,'received':len(items),'valid':valid,'invalid':invalid,'candidates_indexed':valid}
   role=next((r for r in project.component_roles if r.id==record.component_role_id),None)
   urgency=calculate_component_urgency(project,role.id,_state(project,role.id),datetime.now(timezone.utc)) if role else None
   monitoring=MonitoringRepository();valid=invalid=quarantined=0;events=0;latest_observation=None
