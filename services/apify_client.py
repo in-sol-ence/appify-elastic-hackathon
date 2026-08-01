@@ -22,15 +22,19 @@ def _translate(error:Exception)->ApifyServiceError:
  if status in {401,403}:return ApifyAuthenticationError('Apify authentication failed.')
  if status==429:return ApifyRateLimitError('Apify rate limit reached. Try again later.')
  return ApifyServiceError('Apify request failed.')
+def _webhooks():
+ base=os.getenv('APIFY_WEBHOOK_BASE_URL');secret=os.getenv('APIFY_WEBHOOK_SECRET')
+ if not base or not secret:return None
+ return [{'eventTypes':['ACTOR.RUN.SUCCEEDED','ACTOR.RUN.FAILED','ACTOR.RUN.TIMED_OUT','ACTOR.RUN.ABORTED'],'requestUrl':base.rstrip('/')+'/webhooks/apify/actor-run','payloadTemplate':'{\"eventType\":\"{{eventType}}\",\"resource\":{{resource}}}','headersTemplate':'{\"X-Apify-Webhook-Secret\":\"'+secret+'\"}'}]
 class ApifyService:
  def __init__(self,client:ApifyClient|None=None):self.client=client or get_apify_client()
  def start_actor(self,run_input:dict,actor_id:str|None=None)->dict:
   actor_id=actor_id or os.getenv('APIFY_PRODUCT_MONITOR_ACTOR_ID')
   if not actor_id:raise ApifyServiceError('APIFY_PRODUCT_MONITOR_ACTOR_ID is missing.')
-  try:return self.client.actor(actor_id).start(run_input=run_input,build=os.getenv('APIFY_DEFAULT_BUILD','latest'),max_total_charge_usd=Decimal(os.getenv('APIFY_MAX_RUN_COST_USD','1.00')))
+  try:return self.client.actor(actor_id).start(run_input=run_input,build=os.getenv('APIFY_DEFAULT_BUILD','latest'),max_total_charge_usd=Decimal(os.getenv('APIFY_MAX_RUN_COST_USD','1.00')),webhooks=_webhooks())
   except ApifyApiError as error:raise _translate(error) from error
  def start_task(self,task_id:str,run_input:dict)->dict:
-  try:return self.client.task(task_id).start(task_input=run_input)
+  try:return self.client.task(task_id).start(task_input=run_input,build=os.getenv('APIFY_DEFAULT_BUILD','latest'),webhooks=_webhooks())
   except ApifyApiError as error:raise _translate(error) from error
  def get_run(self,run_id:str)->dict:
   try:

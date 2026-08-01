@@ -4,7 +4,7 @@ from elasticsearch import ConflictError,NotFoundError
 from models.observations import ExtractionStatus,ProductObservation
 from services.change_severity import evaluate_change_severity
 from services.elasticsearch_client import CHANGE_EVENTS_INDEX,CURRENT_LISTINGS_INDEX,OBSERVATIONS_INDEX,QUARANTINE_INDEX,SOURCE_HEALTH_INDEX,get_elasticsearch_client,require_write_access
-from services.product_change_detection import detect_changes,observation_id
+from services.product_change_detection import _event,detect_changes,observation_id
 from services.product_identity import verify_product_identity
 
 def current_document_id(product_id,source_id):return hashlib.sha256(f'{product_id}|{source_id}'.encode()).hexdigest()
@@ -23,7 +23,14 @@ def ingest_observation(observation:ProductObservation,expected_identity:dict,urg
   client.index(index=QUARANTINE_INDEX,id=oid,document=doc|{'quarantine_reason':method});
   if monitoring_repository:monitoring_repository.mark_failure(observation.source_id)
   return {'duplicate':False,'quarantined':True,'observation_id':oid,'events':[]}
- previous=_previous(client,observation);events=detect_changes(previous,observation)
+ previous=_previous(client,observation)
+ if previous and observation.extraction.status!=ExtractionStatus.FAILED and observation.observed_at<=previous.observed_at:
+  return {'duplicate':False,'out_of_order':True,'observation_id':oid,'events':[]}
+ try:previous_health=client.get(index=SOURCE_HEALTH_INDEX,id=observation.source_id)['_source']
+ except NotFoundError:previous_health={}
+ events=detect_changes(previous,observation,repeated_missing_count=int(previous_health.get('consecutive_failures',0)))
+ if observation.extraction.status!=ExtractionStatus.FAILED and int(previous_health.get('consecutive_failures',0))>0:
+  events.append(_event(observation,'source_recovered','failed','success'))
  if observation.extraction.status==ExtractionStatus.FAILED:
   if monitoring_repository:monitoring_repository.mark_failure(observation.source_id)
  else:
@@ -32,6 +39,7 @@ def ingest_observation(observation:ProductObservation,expected_identity:dict,urg
  for event in events:
   severity=evaluate_change_severity(event.event_type,urgency_score,event.change_magnitude or 0,event.source_confidence);event.component_urgency_score=urgency_score;event.event_severity=severity.severity
   client.create(index=CHANGE_EVENTS_INDEX,id=event.event_id,document=event.model_dump(mode='json'))
- health={'source_id':observation.source_id,'last_successful_run':observation.observed_at.isoformat() if observation.extraction.status!=ExtractionStatus.FAILED else None,'last_failure':observation.observed_at.isoformat() if observation.extraction.status==ExtractionStatus.FAILED else None,'consecutive_failures':1 if observation.extraction.status==ExtractionStatus.FAILED else 0,'extraction_confidence':observation.extraction.confidence,'last_verified_observation':observation.observed_at.isoformat() if verified else None,'data_freshness_status':'fresh' if observation.extraction.status!=ExtractionStatus.FAILED else 'stale','actor_run_id':observation.actor_run_id,'error_category':observation.extraction.error_category}
+ failure_count=(int(previous_health.get('consecutive_failures',0))+1) if observation.extraction.status==ExtractionStatus.FAILED else 0
+ health={'source_id':observation.source_id,'last_successful_run':observation.observed_at.isoformat() if observation.extraction.status!=ExtractionStatus.FAILED else previous_health.get('last_successful_run'),'last_failure':observation.observed_at.isoformat() if observation.extraction.status==ExtractionStatus.FAILED else previous_health.get('last_failure'),'consecutive_failures':failure_count,'extraction_confidence':observation.extraction.confidence,'last_verified_observation':observation.observed_at.isoformat() if verified else None,'data_freshness_status':'fresh' if observation.extraction.status!=ExtractionStatus.FAILED else 'stale','actor_run_id':observation.actor_run_id,'error_category':observation.extraction.error_category}
  client.index(index=SOURCE_HEALTH_INDEX,id=observation.source_id,document=health)
  return {'duplicate':False,'quarantined':False,'observation_id':oid,'events':events}

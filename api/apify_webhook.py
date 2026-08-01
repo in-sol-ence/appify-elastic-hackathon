@@ -10,6 +10,7 @@ from services.apify_client import ApifyService,ApifyServiceError
 from services.component_urgency import calculate_component_urgency
 from services.discovery_ingestion import ingest_discovery_candidate
 from services.observation_ingestion import ingest_observation
+from services.readiness import evaluate_project_readiness
 from services.monitoring_scheduler import reconcile_source_schedule,select_monitoring_schedule
 app=FastAPI(title='Robotics BOM Guardian Apify Webhook')
 
@@ -58,6 +59,7 @@ async def apify_actor_run(request:Request,x_apify_webhook_secret:str|None=Header
     observation=ProductObservation.model_validate(item);latest_observation=observation;result=ingest_observation(observation,_expected(project,record),urgency.score if urgency else 0,monitoring_repository=monitoring);valid+=1;quarantined+=int(result.get('quarantined',False));events+=len(result.get('events',[]))
    except Exception:invalid+=1
   runs.update_run(run_id,status=status,default_dataset_id=dataset_id,finished_at=metadata.get('finishedAt'),items_received=len(items),ingestion_status='completed' if valid else 'failed',error_message=f'{invalid} invalid dataset item(s)' if invalid else None)
+  evaluate_project_readiness(project)
   if record.monitoring_source_id and role and latest_observation:
    source=monitoring.get_source(record.monitoring_source_id)
    if source:

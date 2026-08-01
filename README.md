@@ -372,6 +372,8 @@ Deadline-aware comparison never promotes incompatible products. Low urgency emph
 app.py
 requirements.txt
 .env.example
+api/apify_webhook.py
+actors/product_page_monitor/
 db/migrations/001_create_projects.sql
 models/
   project.py
@@ -385,6 +387,7 @@ pages/
   bom.py
   component_detail.py
   find_products.py
+  live_products.py
   settings.py
 repositories/
   database.py
@@ -410,6 +413,12 @@ services/
   product_ranking.py
   product_evidence_search.py
   product_selection.py
+  apify_client.py
+  component_urgency.py
+  monitoring_scheduler.py
+  observation_ingestion.py
+  product_change_detection.py
+  procurement_recommendation.py
 ui/
 tests/
 examples/autonomous_target_rover.json

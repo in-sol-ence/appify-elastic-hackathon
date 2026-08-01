@@ -43,7 +43,10 @@ async def observe(source,base,run_id,approved,delay):
  if not allowed(url,approved):return common|{'identity':{},'commercial':{'availability':'unknown'},'product_state':{},'evidence':{},'extraction':{'status':'failed','confidence':0,'warnings':[],'error_category':'unapproved_source','error_message':'Source domain is not approved.'}}
  try:
   await asyncio.sleep(max(0,delay)/1000)
-  async with httpx.AsyncClient(timeout=30,follow_redirects=False,headers={'User-Agent':'Robotics-BOM-Guardian/1.0'}) as client:response=await client.get(url);response.raise_for_status()
+  request_headers={'User-Agent':'Robotics-BOM-Guardian/1.0'}
+  for key,value in source.get('request_headers',{}).items():
+   if key.lower() not in {'host','authorization','cookie','proxy-authorization'}:request_headers[key]=str(value)
+  async with httpx.AsyncClient(timeout=30,follow_redirects=False,headers=request_headers) as client:response=await client.get(url);response.raise_for_status()
   soup=BeautifulSoup(response.text,'html.parser');data=json_ld_product(soup) if source.get('extraction',{}).get('prefer_json_ld',True) else {};offers=data.get('offers') or {};offers=offers[0] if isinstance(offers,list) and offers else offers
   extraction=source.get('extraction',{});title=data.get('name') or text_at(soup,extraction.get('title_selector'));brand=data.get('brand') or {};manufacturer=brand.get('name') if isinstance(brand,dict) else brand
   mpn=data.get('mpn') or text_at(soup,extraction.get('part_number_selector'));price_text=str(offers.get('price') or '') or text_at(soup,extraction.get('price_selector'));availability_text=str(offers.get('availability') or '') or text_at(soup,extraction.get('availability_selector'));shipping=text_at(soup,extraction.get('shipping_selector'));earliest,latest=parse_delivery(shipping)

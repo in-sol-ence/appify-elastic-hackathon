@@ -16,7 +16,7 @@ def cron_for_hours(hours:int)->str:
  return '0 6 */5 * *'
 def reconcile_source_schedule(source:MonitoredProductSource,decision:MonitoringScheduleDecision,actor_id:str,task_id:str|None,repository,apify_service):
  if not decision.changed:return source.apify_schedule_id
- action={'type':'RUN_ACTOR_TASK' if task_id else 'RUN_ACTOR','actorTaskId':task_id,'actorId':None if task_id else actor_id}
+ action={'type':'RUN_ACTOR_TASK','actorTaskId':task_id} if task_id else {'type':'RUN_ACTOR','actorId':actor_id}
  if source.apify_schedule_id:result=apify_service.update_schedule(source.apify_schedule_id,cron_for_hours(decision.frequency_hours),[action])
  else:result=apify_service.create_schedule(f"rbg-{source.id}",cron_for_hours(decision.frequency_hours),[action])
  repository.set_schedule(source.id,decision.tier,result['id']);return result['id']
