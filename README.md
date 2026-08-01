@@ -2,7 +2,9 @@
 
 A Streamlit application for creating, understanding, editing, and deterministically evaluating robotics projects and bills of materials. Projects are validated with Pydantic v2 and persisted as complete JSONB documents in PostgreSQL through Psycopg 3.
 
-This version does not implement monitoring, authentication, alerts, Apify ingestion, or Elasticsearch synchronization.
+This version includes optional Apify-powered product monitoring and Elasticsearch-backed product discovery, evidence, observation history, current listing state, change detection, and source health. PostgreSQL remains authoritative, and no purchasing is automated.
+
+For the complete architecture, data flow, security model, deployment instructions, and troubleshooting guide, see [`docs/APIFY_ELASTICSEARCH_GUIDE.md`](docs/APIFY_ELASTICSEARCH_GUIDE.md).
 
 ## Prerequisites
 
@@ -236,6 +238,8 @@ export ES_ALLOW_WRITES=1
 python scripts/init_elasticsearch.py
 python scripts/import_products.py
 python scripts/import_product_evidence.py
+# For source-backed candidates collected by Apify:
+python scripts/import_apify_discovery.py DATASET_ID onboard_computer
 streamlit run app.py
 unset ES_ALLOW_WRITES
 ```
@@ -275,6 +279,9 @@ Create an Apify API token and add the following to `.env`:
 ```env
 APIFY_API_TOKEN=your_token
 APIFY_PRODUCT_MONITOR_ACTOR_ID=your_actor_id
+APIFY_PRODUCT_ANALYSIS_ACTOR_ID=apify/google-search-scraper
+APIFY_PRODUCT_ANALYSIS_COUNTRY=us
+APIFY_PRODUCT_ANALYSIS_TIMEOUT_SECS=120
 APIFY_WEBHOOK_SECRET=your_random_webhook_secret
 APIFY_WEBHOOK_BASE_URL=https://your-app.example.com
 APIFY_DEFAULT_BUILD=latest
@@ -287,6 +294,8 @@ Test authentication without exposing the token:
 ```bash
 python scripts/test_apify_connection.py
 ```
+
+The **Analyze** action on each **Find Products** result runs Apify's official Google Search Results Scraper with one bounded query, then displays normalized evidence links and the Actor dataset output. Override `APIFY_PRODUCT_ANALYSIS_ACTOR_ID` only with a reviewed Actor that accepts the same input/output contract.
 
 ### Deploy the Actor
 

@@ -25,17 +25,32 @@ def hard_filters(profile:ComponentSearchProfile)->list[dict]:
     return filters
 
 
+def _sample_exclusion()->list[dict]:
+    return [] if os.getenv("INCLUDE_DEVELOPMENT_PRODUCTS")=="1" else [{"term":{"source_type":"development_sample"}},{"term":{"lifecycle_status":"development_sample"}}]
+
+
+def _catalog_filters()->list[dict]:
+    return [] if os.getenv("INCLUDE_DEVELOPMENT_PRODUCTS")=="1" else [{"exists":{"field":"source_url"}}]
+
+
 def build_product_query(profile:ComponentSearchProfile,semantic:bool=True)->dict:
     should=[{"multi_match":{"query":profile.natural_language_description,"fields":["name^4","manufacturer^2","model^3","manufacturer_part_number^5","product_summary^3","description","intended_applications","important_features"],"type":"best_fields"}}]
     if semantic:should.append({"semantic":{"field":"semantic_text","query":profile.natural_language_description}})
-    return {"bool":{"filter":hard_filters(profile),"should":should,"minimum_should_match":1}}
+    return {"bool":{"filter":[*_catalog_filters(),*hard_filters(profile)],"must_not":_sample_exclusion(),"should":should,"minimum_should_match":1}}
+
+
+def _source_backed(product:Product)->bool:
+    if os.getenv("INCLUDE_DEVELOPMENT_PRODUCTS")=="1":return True
+    return product.source_type!="development_sample" and product.lifecycle_status!="development_sample" and product.source_url.startswith(("https://","http://"))
 
 
 def _results(profile,hits,fallback=False):
     results=[]
     for hit in hits:
         source=dict(hit["_source"]);source.pop("semantic_text",None)
-        product=Product.model_validate(source);evaluation=evaluate_product_compatibility(profile,product);search_score=float(hit.get("_score") or 0)
+        product=Product.model_validate(source)
+        if not _source_backed(product):continue
+        evaluation=evaluate_product_compatibility(profile,product);search_score=float(hit.get("_score") or 0)
         fit,breakdown=score_product(profile,product,evaluation,search_score)
         results.append(ProductSearchResult(product=product,search_score=search_score,project_fit_score=fit,compatibility_status=evaluation.status,matched_requirements=evaluation.passed_requirements,missing_fields=evaluation.unknown_requirements,search_explanation="Keyword search used because semantic search was unavailable." if fallback else "Hybrid lexical and semantic ranking with structured hard filters.",score_explanation=breakdown))
     return rank_results(results)
@@ -58,15 +73,16 @@ def search_products(profile:ComponentSearchProfile,limit:int=20,client=None)->li
 def find_similar_products(product_id:str,profile:ComponentSearchProfile|None=None,limit:int=10,client=None)->list[ProductSearchResult]:
     client=client or get_elasticsearch_client()
     try:
-        filters=hard_filters(profile) if profile else []
+        filters=[*_catalog_filters(),*(hard_filters(profile) if profile else [])]
         source=client.get(index=PRODUCTS_INDEX,id=product_id).get("_source",{})
         semantic_text=". ".join(str(source.get(field,"")) for field in ["name","category","product_summary","intended_applications","important_features"] if source.get(field))
-        semantic_query={"bool":{"must":[{"semantic":{"field":"semantic_text","query":semantic_text}}],"filter":filters,"must_not":[{"term":{"product_id":product_id}}]}}
-        lexical_query={"bool":{"must":[{"more_like_this":{"fields":["name","product_summary","description","intended_applications"],"like":[{"_index":PRODUCTS_INDEX,"_id":product_id}],"min_term_freq":1,"min_doc_freq":1}}],"filter":filters,"must_not":[{"term":{"product_id":product_id}}]}}
+        semantic_query={"bool":{"must":[{"semantic":{"field":"semantic_text","query":semantic_text}}],"filter":filters,"must_not":[{"term":{"product_id":product_id}},*_sample_exclusion()]}}
+        lexical_query={"bool":{"must":[{"more_like_this":{"fields":["name","product_summary","description","intended_applications"],"like":[{"_index":PRODUCTS_INDEX,"_id":product_id}],"min_term_freq":1,"min_doc_freq":1}}],"filter":filters,"must_not":[{"term":{"product_id":product_id}},*_sample_exclusion()]}}
         try:response=client.search(index=PRODUCTS_INDEX,query=semantic_query,size=limit)
         except ApiError:response=client.search(index=PRODUCTS_INDEX,query=lexical_query,size=limit)
         if profile:return _results(profile,response.get("hits",{}).get("hits",[]))
-        return [ProductSearchResult(product=Product.model_validate({k:v for k,v in hit["_source"].items() if k!="semantic_text"}),search_score=hit.get("_score") or 0,search_explanation="Similar catalog content; compatibility not established.") for hit in response.get("hits",{}).get("hits",[])]
+        products=[Product.model_validate({k:v for k,v in hit["_source"].items() if k!="semantic_text"}) for hit in response.get("hits",{}).get("hits",[])]
+        return [ProductSearchResult(product=product,search_score=hit.get("_score") or 0,search_explanation="Similar source-backed catalog content; compatibility not established.") for product,hit in zip(products,response.get("hits",{}).get("hits",[])) if _source_backed(product)]
     except Exception as error:raise translate_elasticsearch_error(error) from error
 
 

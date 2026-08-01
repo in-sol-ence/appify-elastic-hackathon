@@ -42,6 +42,15 @@ class ApifyService:
    if not run:raise ApifyRunError('Apify run does not exist.')
    return run
   except ApifyApiError as error:raise _translate(error) from error
+ def call_actor_and_get_items(self,actor_id:str,run_input:dict,timeout_secs:int=120,limit:int=100)->tuple[dict,list[dict]]:
+  try:
+   run=self.client.actor(actor_id).call(run_input=run_input,build=os.getenv('APIFY_DEFAULT_BUILD','latest'),max_total_charge_usd=Decimal(os.getenv('APIFY_MAX_RUN_COST_USD','1.00')),timeout_secs=timeout_secs,wait_secs=timeout_secs)
+   if not run:raise ApifyRunError('Apify analysis did not return a run.')
+   if run.get('status')!='SUCCEEDED':raise ApifyRunError(f"Apify analysis ended with status {run.get('status','unknown')}.")
+   dataset_id=run.get('defaultDatasetId')
+   if not dataset_id:raise ApifyRunError('Apify analysis did not produce a dataset.')
+   return run,self.get_dataset_items(dataset_id,limit)
+  except ApifyApiError as error:raise _translate(error) from error
  def get_dataset_items(self,dataset_id:str,limit:int=1000)->list[dict]:
   try:return list(self.client.dataset(dataset_id).list_items(clean=True,limit=limit).items)
   except ApifyApiError as error:raise ApifyServiceError('Apify dataset retrieval failed.') from error

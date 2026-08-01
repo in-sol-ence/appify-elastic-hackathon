@@ -1,1 +1,68 @@
-{"title":"Product page monitor input","type":"object","schemaVersion":1,"properties":{"run_type":{"type":"string","enum":["scheduled","manual","product_discovery"],"default":"scheduled"},"monitoring_job_id":{"type":"string"},"project_id":{"type":"string"},"component_role_id":{"type":"string"},"product_id":{"type":"string"},"sources":{"type":"array","items":{"type":"object"}},"approved_sources":{"type":"array","items":{"type":"object"}},"expected_identity":{"type":"object"},"maximum_requests":{"type":"integer","minimum":1,"maximum":10,"default":10},"request_delay_ms":{"type":"integer","minimum":250,"default":1000}},"required":["run_type"]}
+{
+  "title": "Product page monitor input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "run_type": {
+      "title": "Run type",
+      "type": "string",
+      "description": "Scheduled monitoring, manual refresh, or approved-source product discovery.",
+      "editor": "select",
+      "enum": ["scheduled", "manual", "product_discovery"],
+      "enumTitles": ["Scheduled", "Manual", "Product discovery"],
+      "default": "scheduled"
+    },
+    "monitoring_job_id": {"title": "Monitoring job ID", "description": "Application-generated monitoring job identifier.", "type": "string", "editor": "textfield"},
+    "project_id": {"title": "Project ID", "description": "PostgreSQL project identifier.", "type": "string", "editor": "textfield"},
+    "component_role_id": {"title": "Component role ID", "description": "Component role associated with this collection.", "type": "string", "editor": "textfield"},
+    "product_id": {"title": "Product ID", "description": "Catalog or selected-product identifier.", "type": "string", "editor": "textfield"},
+    "sources": {
+      "title": "Monitored product sources",
+      "type": "array",
+      "description": "Reviewed product-page source objects.",
+      "editor": "json",
+      "default": [],
+      "items": {"type": "object"}
+    },
+    "approved_sources": {
+      "title": "Approved discovery sources",
+      "type": "array",
+      "description": "Reviewed source objects used for product discovery.",
+      "editor": "json",
+      "default": [],
+      "items": {"type": "object"}
+    },
+    "expected_identity": {
+      "title": "Expected product identity",
+      "type": "object",
+      "description": "Expected manufacturer, model, and part number used by downstream verification.",
+      "editor": "json",
+      "default": {}
+    },
+    "search_profile": {
+      "title": "Search profile",
+      "type": "object",
+      "description": "Component search context attached to discovery candidates.",
+      "editor": "json",
+      "default": {}
+    },
+    "maximum_requests": {
+      "title": "Maximum requests",
+      "description": "Maximum number of approved sources to request, hard-capped at ten by the Actor.",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 10
+    },
+    "request_delay_ms": {
+      "title": "Delay between requests (milliseconds)",
+      "description": "Responsible delay applied before each source request.",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 250,
+      "default": 1000
+    }
+  },
+  "required": ["run_type"]
+}

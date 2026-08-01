@@ -64,6 +64,6 @@ async def main():
   for source in sources[:min(int(data.get('maximum_requests',10)),10)]:
    result=await observe(source,data,run_id,domains,int(data.get('request_delay_ms',1000)))
    if run_type=='product_discovery':
-    result={'schema_version':'1.0','run_type':'product_discovery','project_id':data.get('project_id'),'component_role_id':data.get('component_role_id'),'candidate_identity':result.get('identity',{}),'candidate_specifications':{},'search_profile':data.get('search_profile',{}),'source_url':result.get('source_url'),'source_evidence':result.get('evidence',{}),'extraction':result.get('extraction',{}),'compatibility_status':'unevaluated'}
+    result={'schema_version':'1.0','run_type':'product_discovery','project_id':data.get('project_id'),'component_role_id':data.get('component_role_id'),'candidate_identity':result.get('identity',{}),'candidate_supplier':result.get('supplier'),'candidate_commercial':result.get('commercial',{}),'candidate_specifications':{},'search_profile':data.get('search_profile',{}),'source_url':result.get('source_url'),'source_evidence':result.get('evidence',{}),'extraction':result.get('extraction',{}),'compatibility_status':'unevaluated'}
    await Actor.push_data(result)
 if __name__=='__main__':asyncio.run(main())

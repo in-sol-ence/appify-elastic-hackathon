@@ -24,7 +24,7 @@ def normalize(row):
   if source in row and row[source] not in ('',None):row[target]=float(row.pop(source))*scale
  return row
 def main():
- parser=argparse.ArgumentParser();parser.add_argument('paths',nargs='*',default=['data/products/development_catalog.json']);args=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('paths',nargs='*',default=['data/products/source_backed_catalog.json']);args=parser.parse_args()
  require_write_access();client=get_elasticsearch_client();actions=[];invalid=[]
  for filename in args.paths:
   for index,row in enumerate(rows(Path(filename))):

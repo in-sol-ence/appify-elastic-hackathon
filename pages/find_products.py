@@ -1,8 +1,10 @@
+import os
 import streamlit as st
 
 from models.products import EvidenceFilters
 from models.search import ProductSearchResult
 from repositories.project_repository import ProjectRepository
+from services.apify_product_analysis import analyze_product_with_apify
 from services.compatibility import evaluate_product_compatibility
 from services.elasticsearch_client import ProductSearchError
 from services.product_evidence_search import search_product_evidence
@@ -36,6 +38,19 @@ def _save_selection(project,product,role_id,repository,state,primary=True):
     return selection
 
 
+def _render_apify_analysis(analysis):
+    st.markdown("#### Apify product analysis")
+    st.caption(f"Actor: {analysis['actor_id']} · Run: {analysis.get('run_id') or 'unknown'}")
+    st.write("**Evidence query:**",analysis["query"])
+    for index,source in enumerate(analysis["sources"]):
+        with st.container(border=True):
+            st.write(source["title"])
+            if source["description"]:st.caption(source["description"])
+            st.link_button("Open source",source["url"],key=f"analysis_source_{analysis.get('run_id')}_{index}")
+    with st.expander("Actor dataset output"):
+        st.json(analysis["raw_output"])
+
+
 def render(project,report,repository:ProjectRepository)->None:
     state=get_wizard();st.subheader("Find Products")
     roles=sorted(project.component_roles,key=lambda role:_priority(project,report,role),reverse=True)
@@ -60,13 +75,16 @@ def render(project,report,repository:ProjectRepository)->None:
     if right.button("Reset Search",key="find_reset"):
         state.editing_state.pop("product_results",None);state.editing_state.pop("product_profile",None);st.rerun()
     raw=state.editing_state.get("product_results",[]);results=[ProductSearchResult.model_validate(item) for item in raw]
+    if os.getenv("INCLUDE_DEVELOPMENT_PRODUCTS")!="1":results=[result for result in results if result.product.source_type!="development_sample"]
     if not results:return
     st.markdown("#### Search results")
     compare=[]
     for result in results:
         product=result.product;evaluation=evaluate_product_compatibility(profile,product)
         with st.container(border=True):
-            st.markdown(f"### {product.name}");st.write(f"{product.manufacturer} · {product.model or 'No model'}")
+            st.markdown(f"### {product.name}");st.write(f"{product.manufacturer} · {product.model or 'No model'} · Source: {product.source_type.replace('_',' ')}")
+            if product.source_type=="development_sample":st.warning("Development sample — not a real purchasable product.")
+            elif product.source_url:st.caption(f"Observed source: {product.source_url}")
             st.write(f"**{evaluation.status}** · Project fit **{result.project_fit_score:.1f}/100** · Search relevance {result.search_score:.2f}")
             st.write(_known_specs(product));st.write(f"Estimated price: {'Unknown' if product.price_estimate is None else f'{product.currency or ""} {product.price_estimate:,.2f}'} · Documentation: {'Yes' if product.documentation_available else 'Unknown/No'}")
             with st.expander("Compatibility and product details"):
@@ -78,7 +96,7 @@ def render(project,report,repository:ProjectRepository)->None:
                         if not evidence:st.info("No local evidence matched this question.")
                         for item in evidence:st.write(f"**{item.title}** · {item.source_type} · authority {item.source_authority:.2f}\n\n{item.text}\n\n{item.source_url}")
                     except ProductSearchError as error:st.error(str(error))
-            actions=st.columns(5)
+            actions=st.columns(6)
             if actions[0].button("Select product",key=f"select_{product.product_id}"):
                 try:_save_selection(project,product,role_id,repository,state,True);st.success("Product selected and saved to PostgreSQL.");st.rerun()
                 except Exception as error:show_repository_error(error,"saved")
@@ -89,11 +107,18 @@ def render(project,report,repository:ProjectRepository)->None:
                 try:
                     similar=find_similar_products(product.product_id,profile);state.editing_state["product_results"]=[r.model_dump(mode="json") for r in similar];st.rerun()
                 except ProductSearchError as error:st.error(str(error))
-            reason=actions[3].selectbox("Reject reason",REJECTION_REASONS,key=f"reason_{product.product_id}",label_visibility="collapsed")
-            if actions[4].button("Reject",key=f"reject_{product.product_id}"):
+            analysis_key=f"apify_analysis_{product.product_id}"
+            if actions[3].button("Analyze",key=f"analyze_{product.product_id}",help="Run Apify's Google Search Results Scraper for product evidence"):
+                try:
+                    with st.spinner("Apify is analyzing this product..."):
+                        state.editing_state[analysis_key]=analyze_product_with_apify(product,profile)
+                except Exception as error:st.error(str(error))
+            reason=actions[4].selectbox("Reject reason",REJECTION_REASONS,key=f"reason_{product.product_id}",label_visibility="collapsed")
+            if actions[5].button("Reject",key=f"reject_{product.product_id}"):
                 try:
                     fresh=repository.get_project(state.project_id) if state.project_id else project;reject_catalog_product(fresh,role_id,product,reason);state.project=fresh;state.selected_project=fresh;save_wizard_project(state,repository,state.persistence_status if state.persistence_status in {"draft","active","archived"} else "active");st.rerun()
                 except Exception as error:show_repository_error(error,"saved")
+            if state.editing_state.get(analysis_key):_render_apify_analysis(state.editing_state[analysis_key])
             if st.checkbox("Compare",key=f"compare_{product.product_id}") and len(compare)<4:compare.append(result)
     if compare:
         st.markdown("#### Product comparison")
