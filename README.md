@@ -264,6 +264,108 @@ Selecting a catalog result copies its identity, expected price, and known struct
 - **Semantic unavailable:** keyword search remains operational; configure a supported inference endpoint if semantic retrieval is required.
 - **Import rejected:** confirm mappings exist, inspect invalid-record counts, and verify write permissions.
 
+## Apify live product intelligence
+
+Apify collects approved product pages; Elasticsearch stores append-only observations, latest listing state, changes, and source health; PostgreSQL stores monitored sources, preferences, schedules, and Apify run records. Python performs identity checks, urgency, change detection, deadline analysis, schedule selection, comparison, and recommendations.
+
+### Configure Apify
+
+Create an Apify API token and add the following to `.env`:
+
+```env
+APIFY_API_TOKEN=your_token
+APIFY_PRODUCT_MONITOR_ACTOR_ID=your_actor_id
+APIFY_WEBHOOK_SECRET=your_random_webhook_secret
+APIFY_WEBHOOK_BASE_URL=https://your-app.example.com
+APIFY_DEFAULT_BUILD=latest
+APIFY_MAX_RUN_COST_USD=1.00
+APPROVED_PRODUCT_DOMAINS=supplier.example,manufacturer.example
+```
+
+Test authentication without exposing the token:
+
+```bash
+python scripts/test_apify_connection.py
+```
+
+### Deploy the Actor
+
+The Python Actor is in `actors/product_page_monitor/`. It prefers JSON-LD Product data, uses reviewed selectors as fallback, enforces an approved-domain allowlist, preserves unknowns as null, and emits structured failures instead of turning scrape failures into out-of-stock observations.
+
+Using the Apify CLI after authenticating:
+
+```bash
+cd actors/product_page_monitor
+apify push
+cd ../..
+```
+
+Set the returned Actor ID as `APIFY_PRODUCT_MONITOR_ACTOR_ID`. Actor input and dataset contracts are documented by `input_schema.json` and `dataset_schema.json`. Reusable reviewed Task and schedule configurations can be created with:
+
+```bash
+python scripts/create_apify_tasks.py path/to/reviewed-task.json
+python scripts/create_apify_schedules.py path/to/reviewed-schedule.json
+```
+
+Do not pass arbitrary user domains. Tasks should hold stable supplier selectors, currency, headers, rate limits, and approved-domain configuration; runs should override only project/product IDs and reviewed URLs.
+
+### Apply monitoring storage and Elasticsearch mappings
+
+```bash
+python scripts/init_database.py
+export ES_ALLOW_WRITES=1
+python scripts/init_elasticsearch.py
+unset ES_ALLOW_WRITES
+```
+
+Migration `002_add_product_monitoring.sql` adds monitored sources, Apify runs, and component preferences. Elasticsearch adds append-only observations, deterministic latest state, change events, source health, and identity quarantine indices.
+
+### Webhook service
+
+Streamlit does not receive webhooks. Run the dedicated FastAPI service behind HTTPS:
+
+```bash
+uvicorn api.apify_webhook:app --host 0.0.0.0 --port 8000
+```
+
+Configure an Apify Actor-run webhook for:
+
+```text
+POST https://your-app.example.com/webhooks/apify/actor-run
+X-Apify-Webhook-Secret: your_random_webhook_secret
+```
+
+The endpoint authenticates the secret, claims each run once in PostgreSQL, retrieves the completed dataset, validates observations, verifies exact product identity, quarantines mismatches, appends history, updates latest state, creates changes, updates source health, and reconciles monitoring tier changes. Duplicate deliveries return without duplicate observations or events.
+
+For local webhook testing, expose the FastAPI port with a reviewed HTTPS tunnel and use a dedicated test Actor/source. Never expose Streamlit as a webhook endpoint.
+
+### Monitoring priority and refresh flow
+
+The **Live Products** workspace tab orders roles by deterministic urgency. Deadline pressure, milestone criticality, dependency centrality, procurement gap, replacement difficulty, integration risk, necessity confidence, availability, and delivery margin drive urgency. Tiers range from hourly Critical monitoring to five-day Minimal monitoring. Received and verified products are reduced to infrequent commercial monitoring.
+
+**Refresh now** starts one asynchronous Actor or Task run and stores the run ID. Simultaneous source runs are rejected. The UI returns immediately; webhook ingestion updates observations later. Stale source data forces a refresh recommendation before purchasing decisions.
+
+Deadline-aware comparison never promotes incompatible products. Low urgency emphasizes cost; high urgency increases availability, delivery, and integration weights. Recommendations include order now, order soon, monitor, choose an alternative, verify compatibility, wait for price, defer optional work, refresh stale data, manual review, or no action, with supporting facts and change explanations.
+
+### Cost and safety guidance
+
+- Set `APIFY_MAX_RUN_COST_USD` conservatively.
+- Keep `maximum_requests` small and source delays respectful.
+- Use shared Tasks rather than one Actor per product.
+- Increase schedules only when the calculated tier changes.
+- Reduce repeatedly failing sources and received/verified products.
+- Never infer availability from scrape failure, price from missing text, or delivery dates from vague shipping language.
+- Require `ES_ALLOW_WRITES=1` for initialization, imports, webhook ingestion, and acknowledgments.
+
+### Apify troubleshooting
+
+- **Actor missing:** deploy `actors/product_page_monitor` and set its ID.
+- **Authentication failure:** rotate `APIFY_API_TOKEN` and rerun the connection test.
+- **No observations:** inspect the Apify run dataset and structured extraction errors.
+- **Identity mismatch:** review the quarantine record and expected part number/model; do not merge semantically.
+- **Webhook rejected:** verify the HTTPS URL and `X-Apify-Webhook-Secret` header.
+- **Changes absent:** confirm Elasticsearch writes are enabled for the webhook process and monitoring indices exist.
+
 ## Project layout
 
 ```text
